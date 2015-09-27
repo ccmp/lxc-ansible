@@ -1,0 +1,55 @@
+# Usage:
+#  ansible-playbook -i ../hosts ./main.yml -v
+#
+
+- hosts: mng
+  remote_user: root
+#  sudo: yes
+
+  vars:
+    common: ../common
+
+    base_container: base-v1-0
+    container_name: base_web-v1-0
+    repo_dir: /work/image
+    lxc_dir: /var/lib/lxc
+    container_dir: '{{ lxc_dir }}/{{ container_name }}'
+
+  tasks:
+
+  - include: "{{ common }}/task.yml"
+
+  - file: path={{ container_dir }} state=directory
+
+  - shell: tar xfz {{ repo_dir }}/{{ base_container }}.tar.gz
+    args:
+      chdir: '{{ container_dir }}'
+
+  - shell: echo "{{ container_name }}" > {{ container_dir }}/rootfs/etc/hostname
+    
+
+  - lxc_container: 
+      name: '{{ container_name }}'
+      container_log: true
+      template: debian
+      template_options: --arch amd64 --release jessie
+      state: stopped
+      container_command: |
+        apt-get update
+        apt-get -y install apache2 iptables 
+        apt-get clean
+        systemctl apache2 enable
+    notify:
+    - archive
+
+  - file: path={{ repo_dir }} state=directory 
+
+
+  handlers:
+
+  - name: archive
+    shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ container_name }}.tar.gz
+    args:
+      chdir: '{{ container_dir }}'
+
+

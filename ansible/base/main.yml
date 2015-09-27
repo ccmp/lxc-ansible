@@ -1,0 +1,45 @@
+# Usage:
+#  ansible-playbook -i ../hosts ./main.yml -v
+#
+
+- hosts: mng
+  remote_user: root
+#  sudo: yes
+
+  vars:
+    common: ../common
+
+    container_name: base-v1-0
+    repo_dir: /work/image
+    lxc_dir: /var/lib/lxc
+    container_dir: '{{ lxc_dir }}/{{ container_name }}'
+
+  tasks:
+
+  - include: "{{ common }}/task.yml"
+
+  - file: path={{ repo_dir }} state=directory 
+
+  - lxc_container: 
+      name: '{{ container_name }}'
+      container_log: true
+      template: debian
+      template_options: --arch amd64 --release jessie
+      state: stopped
+      container_command: |
+        echo "root:password" | chpasswd
+        echo 'Acquire::http { Proxy "http://apt.h.ccmp.jp:3142"; };' >  /etc/apt/apt.conf
+        apt-get update
+        apt-get upgrade
+        apt-get clean
+    notify:
+    - archive
+
+  handlers:
+
+  - name: archive
+    shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ container_name }}.tar.gz
+    args:
+      chdir: '{{ container_dir }}'
+
+

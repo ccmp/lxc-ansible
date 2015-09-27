@@ -1,0 +1,29 @@
+# Usage:
+#  ansible-playbook -i ../hosts ./main.yml -vv
+#
+
+- hosts: mng
+  remote_user: root
+#  sudo: yes
+
+  vars:
+
+  tasks:
+
+  - apt: name={{ item }} state=present
+    with_items:
+      - lxc
+      - less
+      - bridge-utils
+    tags: manager-packages
+
+  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/etc/lxc/default.conf', mode: '0600' }
+      - { name: '/etc/network/interfaces.d/lbr01', mode: '0600' }
+      - { name: '/etc/sysctl.d/forward.conf', mode: '0600' }
+
+  handlers:
+
+
+
