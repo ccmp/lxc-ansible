@@ -19,15 +19,15 @@
 
   - include: "{{ common }}/task.yml"
 
+  - file: path={{ container_dir }} state=absent
   - file: path={{ container_dir }} state=directory
 
   - shell: tar xfz {{ repo_dir }}/{{ base_container }}.tar.gz
     args:
       chdir: '{{ container_dir }}'
 
-  - shell: echo "{{ container_name }}" > {{ container_dir }}/rootfs/etc/hostname
-
   - template: src=./files/var/lib/lxc/config dest={{ container_dir }}/config mode='0644'
+  - template: src=./files/etc/hostname dest={{ container_dir }}/rootfs/etc/hostname mode='0644'
     
   - lxc_container: 
       name: '{{ container_name }}'
@@ -37,7 +37,7 @@
       state: stopped
       container_command: |
         apt-get update
-        apt-get -y install apache2 iptables 
+        apt-get -y install apache2 iptables strace
         apt-get clean
         systemctl enable apache2 
     notify:

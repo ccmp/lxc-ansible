@@ -1,5 +1,13 @@
 
-  - apt: name={{ item }} state=present
+  - copy: src={{ common }}/files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/etc/sysctl.d/forward.conf', mode: '0600' }
+      - { name: '/etc/apt/sources.list', mode: '0644' }
+      - { name: '/etc/apt/preferences', mode: '0644' }
+
+  - shell: sysctl --system
+
+  - apt: name={{ item }} state=present update_cache=yes
     with_items:
       - lxc=1:1.0.7-10 
       - lxc-dev
@@ -13,10 +21,4 @@
   - easy_install: name=pip
 
   - pip: name=lxc-python2 state=latest
-
-  - copy: src={{ common }}/files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
-    with_items:
-      - { name: '/etc/sysctl.d/forward.conf', mode: '0600' }
-      - { name: '/etc/apt/sources.list', mode: '0644' }
-      - { name: '/etc/apt/preferences', mode: '0644' }
 

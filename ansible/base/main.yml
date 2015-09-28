@@ -18,6 +18,8 @@
 
   - include: "{{ common }}/task.yml"
 
+  - file: path={{ container_dir }} state=absent
+
   - file: path={{ repo_dir }} state=directory 
 
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
@@ -38,6 +40,7 @@
         echo 'Acquire::http { Proxy "http://apt.h.ccmp.jp:3142"; };' >  /etc/apt/apt.conf
         apt-get update
         apt-get -y upgrade
+        apt-get -y install iputils-ping
         apt-get clean
     notify:
     - archive
