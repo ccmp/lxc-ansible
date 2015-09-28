@@ -16,8 +16,6 @@
 
   - copy: src={{ common }}/files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
-      - { name: '/etc/lxc/default.conf', mode: '0600' }
-      - { name: '/etc/network/interfaces.d/lbr01', mode: '0600' }
       - { name: '/etc/sysctl.d/forward.conf', mode: '0600' }
       - { name: '/etc/apt/sources.list', mode: '0644' }
       - { name: '/etc/apt/preferences', mode: '0644' }

@@ -18,19 +18,14 @@
 
   - include: "{{ common }}/task.yml"
 
-  - apt: name={{ item }} state=present
-    with_items:
-      - dnsmasq 
-    notify:
-    - restart-dnsmasq
+  - file: path={{ repo_dir }} state=directory 
 
   - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
     with_items:
-      - { name: '/etc/dnsmasq.conf', mode: '0644' }
-    notify:
-    - restart-dnsmasq
+      - { name: '/etc/lxc/default.conf', mode: '0644' }
+      - { name: '/etc/network/interfaces.d/lbr01', mode: '0600' }
 
-  - file: path={{ repo_dir }} state=directory 
+  - service: name=networking state=restarted enabled=yes
 
   - lxc_container: 
       name: '{{ container_name }}'
@@ -54,6 +49,4 @@
     args:
       chdir: '{{ container_dir }}'
 
-  - name: restart-dnsmasq
-    service: name=dnsmasq state=restarted enabled=yes
 

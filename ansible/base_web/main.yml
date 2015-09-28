@@ -26,8 +26,9 @@
       chdir: '{{ container_dir }}'
 
   - shell: echo "{{ container_name }}" > {{ container_dir }}/rootfs/etc/hostname
-    
 
+  - template: src=./files/var/lib/lxc/config dest={{ container_dir }}/config mode='0644'
+    
   - lxc_container: 
       name: '{{ container_name }}'
       container_log: true
@@ -38,12 +39,11 @@
         apt-get update
         apt-get -y install apache2 iptables 
         apt-get clean
-        systemctl apache2 enable
+        systemctl enable apache2 
     notify:
     - archive
 
   - file: path={{ repo_dir }} state=directory 
-
 
   handlers:
 
