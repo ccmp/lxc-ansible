@@ -18,6 +18,18 @@
 
   - include: "{{ common }}/task.yml"
 
+  - apt: name={{ item }} state=present
+    with_items:
+      - dnsmasq 
+    notify:
+    - restart-dnsmasq
+
+  - copy: src=./files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+    with_items:
+      - { name: '/etc/dnsmasq.conf', mode: '0644' }
+    notify:
+    - restart-dnsmasq
+
   - file: path={{ repo_dir }} state=directory 
 
   - lxc_container: 
@@ -30,7 +42,7 @@
         echo "root:password" | chpasswd
         echo 'Acquire::http { Proxy "http://apt.h.ccmp.jp:3142"; };' >  /etc/apt/apt.conf
         apt-get update
-        apt-get upgrade
+        apt-get -y upgrade
         apt-get clean
     notify:
     - archive
@@ -42,4 +54,6 @@
     args:
       chdir: '{{ container_dir }}'
 
+  - name: restart-dnsmasq
+    service: name=dnsmasq state=restarted enabled=yes
 

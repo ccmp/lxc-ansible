@@ -8,6 +8,7 @@
       - python-dev
       - python-setuptools
       - gcc
+      - tcpdump
 
   - easy_install: name=pip
 
