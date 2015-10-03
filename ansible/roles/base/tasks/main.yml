@@ -19,11 +19,13 @@
     state: stopped
     container_command: |
       echo "root:password" | chpasswd
-      echo 'Acquire::http { Proxy "http://apt.h.ccmp.jp:3142"; };' >  /etc/apt/apt.conf
       apt-get update
       apt-get -y upgrade
       apt-get -y install iputils-ping
       apt-get clean
+  environment:
+    MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
+    SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
 
 - shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ container_name }}.tar.gz
   args:
