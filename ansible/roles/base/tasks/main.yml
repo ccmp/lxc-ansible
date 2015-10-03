@@ -19,7 +19,7 @@
     state: stopped
     container_command: |
       echo "root:password" | chpasswd
-      echo 'Acquire::http { Proxy "http://apt.h.ccmp.jp:3142"; };' >  /etc/apt/apt.conf
+#      echo 'Acquire::http { Proxy "http://apt.h.ccmp.jp:3142"; };' >  /etc/apt/apt.conf
       apt-get update
       apt-get -y upgrade
       apt-get -y install iputils-ping
