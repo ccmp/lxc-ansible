@@ -1,0 +1,5 @@
+- name: archive_base_web
+  shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ container_name }}.tar.gz
+  args:
+    chdir: '{{ container_dir }}'
+
