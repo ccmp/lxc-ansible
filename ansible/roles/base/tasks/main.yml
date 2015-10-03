@@ -24,7 +24,8 @@
       apt-get -y install iputils-ping
       apt-get clean
   environment:
-    MIRROR: http://apt.h.ccmp.jp:3142/debian
+    MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
+    SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
 
 - shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ container_name }}.tar.gz
   args:
