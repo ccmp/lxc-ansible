@@ -24,8 +24,11 @@
       apt-get -y install apache2 iptables strace aptitude
       apt-get clean
       systemctl enable apache2 
-  notify:
-  - archive_base_web
+  environment:
+    MIRROR: http://apt.h.ccmp.jp:3142/debian
 
 
+- shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ container_name }}.tar.gz
+  args:
+    chdir: '{{ container_dir }}'
 
