@@ -24,7 +24,8 @@
       apt-get -y upgrade
       apt-get -y install iputils-ping
       apt-get clean
-  notify:
-  - archive_base
 
+- shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ container_name }}.tar.gz
+  args:
+    chdir: '{{ container_dir }}'
 
