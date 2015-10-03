@@ -1,0 +1,30 @@
+
+- name: Remove previous container dir
+  file: path={{ container_dir }} state=absent
+
+- file: path={{ repo_dir }} state=directory 
+
+- copy: src=../files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+  with_items:
+    - { name: '/etc/lxc/default.conf', mode: '0644' }
+    - { name: '/etc/network/interfaces.d/lbr01', mode: '0600' }
+
+- service: name=networking state=restarted enabled=yes
+
+- lxc_container: 
+    name: '{{ container_name }}'
+    container_log: true
+    template: debian
+    template_options: --arch amd64 --release jessie
+    state: stopped
+    container_command: |
+      echo "root:password" | chpasswd
+      echo 'Acquire::http { Proxy "http://apt.h.ccmp.jp:3142"; };' >  /etc/apt/apt.conf
+      apt-get update
+      apt-get -y upgrade
+      apt-get -y install iputils-ping
+      apt-get clean
+  notify:
+  - archive_base
+
+
