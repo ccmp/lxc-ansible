@@ -1,4 +1,4 @@
-aptitude install python git gcc python-setuptools python-dev
+aptitude install python git gcc python-setuptools python-dev -y
 easy_install pip 
 pip install ansible 
 git clone git@github.com:ccmp/lxc-ansible.git
