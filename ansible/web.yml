@@ -1,12 +1,31 @@
 # Usage:
-#  ansible-playbook -i ./development ./web.yml -v
+#  ansible-playbook -i ./development ./lvs.yml -v
 #
 
 - hosts: mng
   remote_user: root
 
+  vars:
+    repo_dir: /work/image
+    lxc_dir: /var/lib/lxc
+
+    base_container_name: base-v1-0
+    middle_container_name: web-v1-0 
+
+    base_container_dir: '{{ lxc_dir }}/{{ base_container_name }}'
+    middle_container_dir: '{{ lxc_dir }}/{{ middle_container_name }}'
+    pkgs: 'apache2 iptables'
+    extra_tasks: 'systemctl enable apache2'
+
+  pre_tasks:
+    - stat: path={{ repo_dir }}/{{ base_container_name }}.tar.gz
+      register: base_tgz
+
+    - stat: path=/usr/bin/lxc-create
+      register: lxc_create
+
   roles:
-    - common
-    - base
-    - base_web
+    - { role: common, when: not lxc_create.stat.xoth }
+    - { role: base, when: not base_tgz.stat.exists }
+    - middle
 

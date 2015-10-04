@@ -10,9 +10,9 @@
     lxc_dir: /var/lib/lxc
 
     base_container_name: base-v1-0
-    base_container_dir: '{{ lxc_dir }}/{{ base_container_name }}'
+    middle_container_name: lvs-v1-0 
 
-    middle_container_name: base_lvs-v1-0 
+    base_container_dir: '{{ lxc_dir }}/{{ base_container_name }}'
     middle_container_dir: '{{ lxc_dir }}/{{ middle_container_name }}'
     pkgs: 'ipvsadm iptables keepalived'
     extra_tasks: 'systemctl enable keepalived'
@@ -27,5 +27,5 @@
   roles:
     - { role: common, when: not lxc_create.stat.xoth }
     - { role: base, when: not base_tgz.stat.exists }
-    - base_middle
+    - middle
 
