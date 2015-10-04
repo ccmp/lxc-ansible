@@ -32,7 +32,7 @@
   args:
     chdir: '{{ middle_container_dir }}'
 
-- stat: {{ repo_dir }}/{{ middle_container_name }}.tar.gz 
+- stat: path={{ repo_dir }}/{{ middle_container_name }}.tar.gz 
   register: tgz
 
 - shell: touch {{ repo_dir }}/sh1sum-{{ middle_container_name }}={{ tgz.stat.checksum }}
