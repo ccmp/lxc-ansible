@@ -21,7 +21,7 @@
       echo "root:password" | chpasswd
       apt-get update
       apt-get -y upgrade
-      apt-get -y install iputils-ping aptitude strace
+      apt-get -y install iputils-ping aptitude strace 
       apt-get clean
   environment:
     MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
