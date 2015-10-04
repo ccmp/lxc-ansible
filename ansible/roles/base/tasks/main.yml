@@ -31,10 +31,5 @@
   args:
     chdir: '{{ base_container_dir }}'
 
-- stat: path={{ repo_dir }}/{{ base_container_name }}.tar.gz 
-  register: tgz
-
-- shell: touch {{ repo_dir }}/{{ base_container_name }}.sha1sum.{{ tgz.stat.checksum }}
-
-- shell: dpkg -l --admindir={{ base_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/{{ base_container_name }}.dpkg-l
+- shell: dpkg-query -W -f='${binary:Package}\t\t\t${Version}\n' --admindir={{ base_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/{{ base_container_name }}.pkgs
 
