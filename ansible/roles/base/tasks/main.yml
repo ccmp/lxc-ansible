@@ -31,5 +31,5 @@
   args:
     chdir: '{{ base_container_dir }}'
 
-- shell: dpkg-query -W -f='${binary:Package}\t\t\t${Version}\n' --admindir={{ base_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/{{ base_container_name }}.pkgs
+- shell: dpkg-query -W -f='${binary:Package}\t\t\t${Version}\n' --admindir={{ base_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/.pkgs.{{ base_container_name }}
 
