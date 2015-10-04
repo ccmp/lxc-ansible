@@ -5,8 +5,22 @@
 - hosts: mng
   remote_user: root
 
+- vars:
+  base_container: base-v1-0
+  container_name: base_web-v1-0
+  repo_dir: /work/image
+  lxc_dir: /var/lib/lxc
+  container_dir: '{{ lxc_dir }}/{{ container_name }}'
+
+  pre_tasks:
+    - stat: path={{ repo_dir }}/{{ base_container }}.tar.gz
+      register: base_tgz
+
+    - stat: path=/usr/bin/lxc-create
+      register: lxc_create
+
   roles:
-    - common
-#    - base
+    - { role: common, when: "lxc_create.stat.xoth == 'False'" }
+    - { role: base, when: "base_tgz.stat.exists == 'False'" }
     - base_lvs
 
