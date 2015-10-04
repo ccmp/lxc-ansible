@@ -32,3 +32,10 @@
   args:
     chdir: '{{ middle_container_dir }}'
 
+- stat: {{ repo_dir }}/{{ middle_container_name }}.tar.gz 
+  register: tgz
+
+- shell: touch {{ repo_dir }}/sh1sum-{{ middle_container_name }}={{ tgz.stat.checksum }}
+
+- shell: dpkg -l --admindir={{ middle_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/dpkg-l-{{ middle_container_name }}
+
