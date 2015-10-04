@@ -1,0 +1,22 @@
+# Usage:
+#  ansible-playbook -i ./development ./lvs.yml -v
+#
+
+- hosts: mng
+  remote_user: root
+
+  vars:
+    repo_dir: /work/image
+    lxc_dir: /var/lib/lxc
+
+    base_container_name: base-v1-0
+    base_container_dir: '{{ lxc_dir }}/{{ base_container_name }}'
+
+  pre_tasks:
+    - stat: path=/usr/bin/lxc-create
+      register: lxc_create
+
+  roles:
+    - { role: common, when: not lxc_create.stat.exists }
+    - base
+
