@@ -23,7 +23,7 @@
       apt-get update
       apt-get -y install {{ pkgs }}
       apt-get clean
-      systemctl enable keepalived
+      {{ extra_tasks }}
   environment:
     MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
     SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
