@@ -1,5 +1,5 @@
 # Usage:
-#  ansible-playbook -i ./development ./web.yml -v
+#  ansible-playbook -i ./development ./lvs.yml -v
 #
 
 - hosts: mng
