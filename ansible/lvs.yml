@@ -25,7 +25,7 @@
       register: lxc_create
 
   roles:
-    - { role: common, when: "lxc_create.stat.xoth == 'False'" }
-    - { role: base, when: "base_tgz.stat.exists == 'false'" }
+    - { role: common, when: not lxc_create.stat.xoth }
+    - { role: base, when: not base_tgz.stat.exists }
     - base_middle
 
