@@ -6,6 +6,7 @@ pip install ansible
 
 ssh-keyscan  github.com >> ~/.ssh/known_hosts
 git clone git@github.com:ccmp/lxc-ansible.git
+cd lxc-ansible
 git checkout develop
 
 cat <<EOF> /etc/hosts
