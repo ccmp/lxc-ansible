@@ -9,17 +9,15 @@
     repo_dir: /work/image
     lxc_dir: /var/lib/lxc
 
-    base: {
-      "container_name": "base-v1-0", 
+    base: 
+      container_name: base-v1-0 
       container_dir: '{{ lxc_dir }}/{{ container_name }}'
-    }
 
-    middle: {
-      container_name: base_lvs-v1-0, 
-      container_dir: '{{ lxc_dir }}/{{ container_name }}',
-      pkgs: 'ipvsadm iptables keepalived',
+    middle:
+      container_name: base_lvs-v1-0 
+      container_dir: '{{ lxc_dir }}/{{ container_name }}'
+      pkgs: 'ipvsadm iptables keepalived'
       extra_tasks: 'systemctl enable keepalived'
-    }
 
   pre_tasks:
     - stat: path={{ repo_dir }}/{{ base.container_name }}.tar.gz
