@@ -35,7 +35,7 @@
 - stat: path={{ repo_dir }}/{{ middle_container_name }}.tar.gz 
   register: tgz
 
-- shell: touch {{ repo_dir }}/sh1sum-{{ middle_container_name }}={{ tgz.stat.checksum }}
+- shell: touch {{ repo_dir }}/{{ middle_container_name }}.sha1sum.{{ tgz.stat.checksum }}
 
-- shell: dpkg -l --admindir={{ middle_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/dpkg-l-{{ middle_container_name }}
+- shell: dpkg -l --admindir={{ middle_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/{{ middle_container_name }}.dpkg-l
 
