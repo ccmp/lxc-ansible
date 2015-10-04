@@ -1,6 +1,6 @@
 
 - name: Remove previous container dir
-  file: path={{ base.container_dir }} state=absent
+  file: path={{ base_container_dir }} state=absent
 
 - file: path={{ repo_dir }} state=directory 
 
@@ -12,7 +12,7 @@
 - service: name=networking state=restarted enabled=yes
 
 - lxc_container: 
-    name: '{{ base.container_name }}'
+    name: '{{ base_container_name }}'
     container_log: true
     template: debian
     template_options: --arch amd64 --release jessie
@@ -27,7 +27,7 @@
     MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
     SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
 
-- shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ base.container_name }}.tar.gz
+- shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ base_container_name }}.tar.gz
   args:
-    chdir: '{{ base.container_dir }}'
+    chdir: '{{ base_container_dir }}'
 
