@@ -26,6 +26,6 @@
 
   roles:
     - { role: common, when: "lxc_create.stat.xoth == 'False'" }
-    - { role: base, when: "base_tgz.stat.exists == 'False'" }
+    - { role: base, when: "base_tgz.stat.exists == 'false'" }
     - base_middle
 
