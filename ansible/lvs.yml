@@ -11,7 +11,7 @@
 
     base: {
       container_name: "base-v1-0" 
-      container_dir: "{{ lxc_dir }}/{{ container_name }}"
+      container_dir: "{{ lxc_dir }}/{{ container_name }}",
     }
 
     middle:
