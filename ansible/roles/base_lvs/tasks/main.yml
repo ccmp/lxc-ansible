@@ -21,9 +21,9 @@
     state: stopped
     container_command: |
       apt-get update
-      apt-get -y install apache2 iptables 
+      apt-get -y install {{ pkgs }}
       apt-get clean
-      systemctl enable apache2 
+      systemctl enable keepalived
   environment:
     MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
     SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
