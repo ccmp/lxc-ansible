@@ -25,6 +25,7 @@
   with_items:
     - { name: '/etc/lxc/default.conf', mode: '0644' }
     - { name: '/etc/network/interfaces.d/lbr01', mode: '0600' }
+    - { name: '/etc/network/interfaces.d/lbr10', mode: '0600' }
 
 - service: name=networking state=restarted enabled=yes
 
