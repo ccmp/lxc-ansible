@@ -1,5 +1,5 @@
 # Usage:
-#  ansible-playbook -i ./inventory/development ./web.yml -v
+#  ansible-playbook -i ./inventory/development ./lvs.yml -v
 #
 
 - hosts: mng
@@ -10,12 +10,12 @@
     lxc_dir: /var/lib/lxc
 
     base_container_name: base-v1-0
-    middle_container_name: web-v1-0 
+    middle_container_name: lvs-v1-0 
 
     base_container_dir: '{{ lxc_dir }}/{{ base_container_name }}'
     middle_container_dir: '{{ lxc_dir }}/{{ middle_container_name }}'
-    pkgs: 'apache2 iptables'
-    extra_tasks: 'systemctl enable apache2'
+    pkgs: 'ipvsadm iptables keepalived'
+    extra_tasks: 'systemctl enable keepalived'
 
   pre_tasks:
     - stat: path={{ repo_dir }}/{{ base_container_name }}.tar.gz
