@@ -1,5 +1,5 @@
 # Usage:
-#  ansible-playbook -i ./development ./lvs.yml -v
+#  ansible-playbook -i ./inventory/development ./lvs.yml -v
 #
 
 - hosts: mng
@@ -25,7 +25,7 @@
       register: lxc_create
 
   roles:
-    - { role: common, when: not lxc_create.stat.exists }
+    - { role: prep_mng, when: not lxc_create.stat.exists }
     - { role: base, when: not base_tgz.stat.exists }
     - middle
 
