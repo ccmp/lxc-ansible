@@ -1,0 +1,70 @@
+- hosts: localhost
+  vars:
+    repo_dir: /work/image
+    lxc_dir: /usr/local/var/lib/lxc
+    archive_dir: /work/archives
+    base_container: base-v1-0
+    container_name: lvsbase-v1-0
+    container_dir: '{{ lxc_dir }}/{{ container_name }}'
+  connection: local
+  tasks:
+    #- name: Copy base container
+    #synchronize: >
+    #  src={{ repo_dir }}/{{ base_container }}/
+    #  dest={{ repo_dir }}/{{ container_name }}
+    #  recursive=yes
+    #shell: >-
+    #  rsync -Ha {{ lxc_dir }}/{{ base_container}}/{{ item }}
+    #  {{ lxc_dir }}/{{ container_name }}/
+    #with_items:
+    #  - rootfs
+    #  - config
+    #  - fstab
+  - name: Create container directory
+    file: path={{ container_dir }} state=directory
+  - name: Extract base container
+    shell: tar xfz {{ repo_dir }}/{{ base_container }}.tar.gz
+    args:
+      chdir: '{{ container_dir }}'
+    
+      
+  - name: Edit hostname
+    shell: echo "{{ container_name }}" > {{ container_dir }}/rootfs/etc/hostname
+    
+  - name: Edit config for local running
+    lineinfile: >
+      dest={{ container_dir }}/config
+      regexp='{{ item.regexp }}'
+      line='{{ item.line }}'
+    with_items:
+    - regexp: 'lxc.utsname'
+      line: 'lxc.utsname = {{ container_name }}'
+    - regexp: 'lxc.rootfs'
+      line: 'lxc.rootfs = {{ container_dir }}/rootfs'
+    - regexp: 'lxc.network.hwaddr'
+      line: 'lxc.network.hwaddr = 00:16:3e:xx:xx:xx'
+    - regexp: 'lxc.mount'
+      line: 'lxc.mount = {{ container_dir }}/fstab'
+  
+  - name: run container
+    lxc_container:
+      name: "{{ container_name }}"
+      state: stopped
+      container_command: |
+        apt-get update
+        apt-get -y install ipvsadm iptables keepalived
+        apt-get clean
+        systemctl keepalived enable
+
+  - name: Archive container
+    shell: tar c config rootfs fstab | gzip > {{ archive_dir }}/{{ container_name }}.tar.gz
+    args:
+      chdir: '{{ container_dir }}'
+
+  - name: Copy archive
+    copy: >
+      src={{ archive_dir }}/{{ container_name }}.tar.gz
+      dest={{ repo_dir }}/{{ container_name }}.tar.gz
+     
+  - name: remove temporary archive
+    file: path={{ archive_dir }}/{{ container_name }}.tar.gz state=absent

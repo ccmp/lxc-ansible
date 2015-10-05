@@ -1,0 +1,35 @@
+virtual_server_group VIP0 {   
+        {{ VIRTUAL_SERVER_IP }} {{ VIRTUAL_SERVER_PORT }}
+	# 10.10.1.110 80
+}
+
+virtual_server group VIP0 {   
+    delay_loop 6
+    lvs_sched lc
+    lvs_method DR
+    protocol TCP
+
+    real_server {{ real_web1_ip }} {{ real_web1_port }} {
+        weight 1
+        inhibit_on_failure
+        HTTP_GET {
+            url {
+              path /index.html 
+              status_code 200  
+            }
+            connect_timeout 3  
+        }
+    }
+
+    real_server {{ real_web2_ip }} {{ real_web2_port }} {
+        weight 1
+        inhibit_on_failure
+        HTTP_GET {
+            url {
+              path /index.html 
+              status_code 200  
+            }
+            connect_timeout 3  
+        }
+    }
+}

@@ -1,0 +1,10 @@
+[Unit]
+Description=LVS network setup
+After=network.target
+
+[Service]
+ExecStart=/work/lvs_setup.sh
+
+[Install]
+WantedBy=multi-user.target
+
