@@ -2,7 +2,7 @@ auto eth0.10
 iface eth0.10 inet static
 
 auto lbr10
-iface lb10 inet static
+iface lbr10 inet manual
 	bridge_ports eth0.10
 	bridge_fd 0
 	bridge_maxwait 0

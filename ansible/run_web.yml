@@ -18,6 +18,7 @@
       register: lxc_start
 
   roles:
-    - { role: prep_mng, when: not lxc_start.stat.exists }
+#    - { role: prep_mng, when: not lxc_start.stat.exists }
+    - prep_mng
     - { role: run_container }
 

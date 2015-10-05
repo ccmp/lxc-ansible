@@ -14,6 +14,7 @@
     - gcc
     - tcpdump
     - strace
+    - vlan
 
 - easy_install: name=pip
 
