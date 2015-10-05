@@ -1,0 +1,18 @@
+- lxc_container: 
+    name: '{{ run_container_name }}'
+    state: absent
+
+- file: path={{ run_container_dir }} state=directory
+- unarchive: src={{ repo_dir }}/{{ middle_container_name }}.tar.gz dest='{{ run_container_dir }}' 
+
+- template: src=../files/var/lib/lxc/config dest={{ run_container_dir }}/config mode='0644'
+
+- template: src=../files/{{ item.name }} dest={{ run_container_dir }}/rootfs/{{ item.name }} mode={{ item.mode }}
+  with_items:
+    - { name: '/etc/hostname', mode: '0600' }
+    
+- lxc_container: 
+    name: '{{ run_container_name }}'
+    container_log: true
+    state: started
+
