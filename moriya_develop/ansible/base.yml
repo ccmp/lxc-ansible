@@ -1,0 +1,41 @@
+- hosts: localhost
+  vars:
+    container_name: base-v1-0
+    archive_dir: /work/archives
+    repo_dir: /work/image
+    lxc_dir: /usr/local/var/lib/lxc
+    container_dir: '{{ lxc_dir }}/{{ container_name }}'
+  connection: local
+  tasks:
+  - name: Create minimum-base rootfs
+    lxc_container:
+      name: '{{ container_name }}'
+      container_log: true
+      template: debian
+      state: started
+      template_options: >
+        --arch amd64
+        --release jessie
+
+  - name: Set initial Password
+    lxc_container:
+      name: base-v1-0
+      state: stopped
+      container_command: |
+        echo "root:password" | chpasswd
+        
+  - name: Archive container
+    shell: tar c config rootfs fstab | gzip > {{ archive_dir }}/{{ container_name }}.tar.gz
+    args:
+      chdir: '{{ container_dir }}'
+
+  - name: Copy archive
+    copy: >
+     src={{ archive_dir }}/{{ container_name }}.tar.gz
+     dest={{ repo_dir }}/{{ container_name }}.tar.gz
+     
+  - name: Remove temporary archive
+    file: path={{ archive_dir }}/{{ container_name }}.tar.gz state=absent
+   
+
+     
