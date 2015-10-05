@@ -27,6 +27,7 @@
 - template: src=../files/{{ item.name }} dest={{ base_container_dir }}/rootfs/{{ item.name }} mode={{ item.mode }}
   with_items:
     - { name: '/root/.ssh/authorized_keys', mode: '0644' }
+    - { name: '/etc/network/interfaces', mode: '0644' }
 
 - shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ base_container_name }}.tar.gz
   args:
