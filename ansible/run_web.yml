@@ -11,6 +11,7 @@
 
     middle_container_name: web-v1-0 
     run_container_name: web-xxx
+    run_container_dir: '{{ lxc_dir }}/{{ run_container_name }}' 
 
   pre_tasks:
     - stat: path=/usr/bin/lxc-start
