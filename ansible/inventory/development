@@ -7,5 +7,5 @@ mng01
 lvs01
 
 [web]
-web01
+web01 ansible_host=192.168.60.213
 
