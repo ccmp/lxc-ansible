@@ -1,0 +1,31 @@
+- hosts: mng
+  remote_user: root
+  vars:
+    archive_dir: /work/archives
+    remote_archive_dir: /tmp
+    local_archive_dir: /tmp
+    lxc_dir: /var/lib/lxc
+    repo_dir: /work/image
+    
+    real_web1_ip: 192.168.10.50
+    real_web1_port: 80
+    real_web2_ip: 192.168.10.51
+    real_web2_port: 80
+
+  roles:
+    - lvs1
+      
+- hosts: lvs01
+  remote_user: root
+  vars:
+    local_archive_dir: /tmp
+    remote_archive_dir: /tmp
+    lxc_dir: /var/lib/lxc
+
+  vars_files:
+    - roles/lvs1/vars/main.yml
+  roles:
+    - deploy
+    
+      
+    

@@ -1,0 +1,9 @@
+# vlan id 1
+auto eth0.1 lbr1
+
+iface eth0.1 inet manual
+      vlan-raw-device eth0
+
+iface lbr1 inet manual
+      bridge_ports eth0.1
+      bridge_wait 0      

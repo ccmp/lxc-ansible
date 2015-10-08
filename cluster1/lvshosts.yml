@@ -1,0 +1,8 @@
+- hosts: lvs
+  remote_user: root
+  vars:
+    
+  roles:
+    - lxchost
+    - lvshost      
+    
