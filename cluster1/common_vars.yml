@@ -1,0 +1,9 @@
+lxc_dir: /var/lib/lxc
+
+repo_dir: /work/image
+archive_dir: /work/archives
+remote_archive_dir: /tmp
+local_archive_dir: /tmp
+
+# eth1 : using virtualbox VM
+vlan_interface: eth1

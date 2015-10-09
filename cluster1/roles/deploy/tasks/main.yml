@@ -2,7 +2,15 @@
   copy: >
     src={{ local_archive_dir }}/{{ container_name }}.tar.gz
     dest={{ remote_archive_dir }}/{{ container_name }}.tar.gz
-    
+
+- name: Stopped provious container
+  shell: lxc-stop -n {{ container_name }}
+  ignore_errors: yes
+  
+- name: Destroy provious container
+  shell: lxc-destroy -n {{ container_name }}
+  ignore_errors: yes
+  
 - name: Remove privious container directory
   file: path={{ lxc_dir }}/{{ container_name }} state=absent
     
@@ -22,9 +30,6 @@
   args:
     chdir: '{{ lxc_dir }}/{{ container_name }}'
 
-#  - name: Load ip_vs modules on host
-#    shell: modprobe ip_vs
-#    
 - name: Start Container
   shell: lxc-start -n {{ container_name }} -d
 
