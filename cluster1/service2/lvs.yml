@@ -1,0 +1,23 @@
+- hosts: mng
+  remote_user: root
+  vars_files :
+    - common_vars.yml
+    - network_vars.yml
+    - vlan_vars.yml
+#  tasks:
+#    - name: debug
+#      debug: var=lvs.lvs1
+  roles:
+    - { role: ../lvs-web-dr/roles/lvs , site: "{{ lvs.lvs1 }}" }
+    - { role: ../lvs-web-dr/roles/lvs , site: "{{ lvs.lvs2 }}" }
+            
+- hosts: lvs01
+  remote_user: root
+  vars_files:
+    - common_vars.yml
+    - network_vars.yml
+
+  roles:
+    - { role: ../lvs-web-dr/roles/deploy , site: "{{ lvs.lvs1 }}"  }
+    - { role: ../lvs-web-dr/roles/deploy , site: "{{ lvs.lvs2 }}"  }
+    

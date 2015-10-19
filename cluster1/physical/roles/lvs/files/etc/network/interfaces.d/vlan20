@@ -1,0 +1,9 @@
+# vlan id 20
+auto {{ vlan_interface }}.20 lbr20
+
+iface {{ vlan_interface }}.20 inet manual
+      vlan-raw-device {{ vlan_interface }}
+
+iface lbr20 inet manual
+      bridge_ports {{ vlan_interface }}.20
+      bridge_wait 0      

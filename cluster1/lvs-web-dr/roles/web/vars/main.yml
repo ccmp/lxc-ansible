@@ -1,0 +1,5 @@
+base_container: "{{ site.base_container }}"
+container_name: "{{ site.container_name }}"
+WEB_IP: "{{ site.local_ip }}"
+
+container_dir: "{{ lxc_dir }}/{{ container_name }}"
