@@ -8,3 +8,13 @@ lvs02
 [web]
 web01
 web02
+
+[lxchost:children]
+mng
+lvs
+web
+[lvshost:children]
+lvs
+
+[manager:children]
+mng

@@ -1,0 +1,6 @@
+manager:
+  repo_dir: /work/image
+  archive_dir: /work/archives
+
+# eth1 : using virtualbox VM
+#vlan_interface: eth1

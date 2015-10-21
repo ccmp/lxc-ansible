@@ -65,13 +65,18 @@
     mode=0644
 
 - name: Archive rootfs for copy
-  shell: tar c config.prd rootfs | gzip > {{ archive_dir }}/{{ container_name }}.tar.gz
+  shell: tar c config.prd rootfs | gzip > {{ manager.archive_dir }}/{{ container_name }}.tar.gz
   args:
     chdir: '{{ container_dir }}'    
 
+- name: destroy container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: absent
+
 - name: fetch rootfs archive
   fetch: >
-    src={{ archive_dir }}/{{ container_name }}.tar.gz
+    src={{ manager.archive_dir }}/{{ container_name }}.tar.gz
     dest={{ local_archive_dir }}/
     flat=yes
       

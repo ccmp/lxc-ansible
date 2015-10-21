@@ -1,0 +1,26 @@
+- name: debug
+  debug: var=vlan
+  
+#- name: stat vlan 
+#  stat: >
+#    path="/etc/network/interfaces.d/vlan{{ item.id }}"
+#  with_items: vlan
+#  register: vlanstat
+
+#- name: debug
+#  debug: var=vlanstat.results
+  
+- name: create vlan interface and its bridge.
+  template: >
+    src=../files/etc/network/interfaces.d/vlanX
+    dest=/etc/network/interfaces.d/vlan{{ item.item.id }}
+    mode=0644
+  with_items: vlanstat.results
+
+#  when: not item.stat.exists
+ 
+#- name: ifup vlan interface
+#  shell: "/sbin/ifup vlan{{ item.item.id }}"
+#  with_items: vlanstat.results
+#  when: not item.stat.exists
+

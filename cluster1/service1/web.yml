@@ -4,9 +4,6 @@
     - common_vars.yml
     - network_vars.yml
     - vlan_vars.yml
-#  tasks:
-#    - name: debug
-#      debug: var=lvs.lvs1
   roles:
     - { role: ../lvs-web-dr/roles/web , site: "{{ web.web1 }}" }
     - { role: ../lvs-web-dr/roles/web , site: "{{ web.web2 }}" }
@@ -19,5 +16,13 @@
 
   roles:
     - { role: ../lvs-web-dr/roles/deploy , site: "{{ web.web1 }}"  }
+
+- hosts: web02
+  remote_user: root
+  vars_files:
+    - common_vars.yml
+    - network_vars.yml
+
+  roles:
     - { role: ../lvs-web-dr/roles/deploy , site: "{{ web.web2 }}"  }
-    
+

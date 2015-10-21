@@ -1,0 +1,17 @@
+lvshost:
+  vlan:
+    - id: "1"
+      iface: "eth1"
+    - id: "10"
+      iface: "eth0"
+    - id: "20"
+      iface: "eth1"
+
+      
+      
+      
+      
+      
+      
+      
+  

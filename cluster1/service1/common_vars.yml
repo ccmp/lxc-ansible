@@ -1,8 +1,8 @@
-lxc_dir: /var/lib/lxc
+#lxc_dir: /var/lib/lxc
 
-repo_dir: /work/image
-archive_dir: /work/archives
-remote_archive_dir: /tmp
+#repo_dir: /work/image
+#archive_dir: /work/archives
+#remote_archive_dir: /tmp
 local_archive_dir: /tmp
 
 # eth1 : using virtualbox VM

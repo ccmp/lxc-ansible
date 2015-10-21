@@ -67,6 +67,11 @@
   args:
     chdir: '{{ container_dir }}'
 
+- name: destroy container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: absent
+
 - name: fetch rootfs archive
   fetch: >
     src={{ archive_dir }}/{{ container_name }}.tar.gz

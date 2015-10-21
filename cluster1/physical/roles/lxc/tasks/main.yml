@@ -20,5 +20,6 @@
 
 - pip: name=lxc-python2 state=latest
 
-#- sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes
-
+- name: Create lxc directory
+  file: state=directory path={{ lxchost.lxc_dir }}
+  

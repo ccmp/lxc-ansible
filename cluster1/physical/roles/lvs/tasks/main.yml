@@ -1,17 +1,17 @@
-- name: setup vlan interface and its bridge.
-  template: >
-    src=../files/{{ item.name }}
-    dest={{ item.name }}
-    mode={{ item.mode }}
-  with_items:
-    - name: '/etc/network/interfaces.d/vlan1'
-      mode: '0644'
-    - name: '/etc/network/interfaces.d/vlan10'
-      mode: '0644'
-    - name: '/etc/network/interfaces.d/vlan20'
-      mode: '0644'
-  notify:
-    - restart_network
+#- name: setup vlan interface and its bridge.
+#  template: >
+#    src=../files/{{ item.name }}
+#    dest={{ item.name }}
+#    mode={{ item.mode }}
+#  with_items:
+#    - name: '/etc/network/interfaces.d/vlan1'
+#      mode: '0644'
+#    - name: '/etc/network/interfaces.d/vlan10'
+#      mode: '0644'
+#    - name: '/etc/network/interfaces.d/vlan20'
+#      mode: '0644'
+#  notify:
+#    - restart_network
 - name: Load ip_vs modules on host
   shell: modprobe ip_vs ip_tables
 - name: port forward enable
