@@ -1,0 +1,51 @@
+- name: stat container directory
+  stat: path={{ container_dir }}
+  register: rc
+  failed_when: rc.stat.isdir == ' false '
+  
+- name: copy hostname
+  copy: >
+    src={{ parsonal_conf_dir }}/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }} mode={{ item.mode }}
+  with_items:
+  - name: '/etc/hostname'
+    mode: '0644'
+      
+- name: Edit Keepalived config
+  copy: >
+    src={{ personal_conf_dir }}/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner=root
+    group=root
+  with_items:
+    - name: '/etc/keepalived/keepalived.conf'
+      mode: '0644'
+  notify:
+    - restart keepalived
+    
+- name: Create Directory for lvs-setup
+  file: state=directory path={{ container_dir }}/rootfs/work
+  
+- name: LVS Setup
+  copy: >
+    src='{{ personal_conf_dir }}/{{ item.name }}' 
+    dest='{{ container_dir }}/rootfs/{{ item.name }}'
+    owner=root
+    group=root
+    mode='{{ item.mode }}'
+  with_items:
+    - name: '/work/lvs-setup.sh'
+      mode: '0755'
+    - name: '/etc/systemd/system/lvs-setup.service'
+      mode: '0644'
+  notify:
+    - restart lvs-setup
+    
+- name: Enable lvs-setup.service
+  file: >
+    path='{{ container_dir }}/rootfs/etc/systemd/system/multi-user.target.wants/lvs-setup.service'
+    src='../lvs-setup.service'
+    state=link
+
+      

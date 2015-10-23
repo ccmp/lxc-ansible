@@ -1,28 +1,30 @@
 - hosts: mng
+  gather_facts: False
   remote_user: root
   vars_files :
-    - common_vars.yml
-    - network_vars.yml
-    - vlan_vars.yml
+    - vars/common.yml
+    - vars/config.yml
   roles:
     - { role: ../lvs-web-dr/roles/lvs , site: "{{ lvs.lvs1 }}" }
     - { role: ../lvs-web-dr/roles/lvs , site: "{{ lvs.lvs2 }}" }
             
 - hosts: lvs01
+  gather_facts: False
   remote_user: root
   vars_files:
-    - common_vars.yml
-    - network_vars.yml
+    - vars/common.yml
+    - vars/config.yml
 
   roles:
     - { role: ../lvs-web-dr/roles/deploy , site: "{{ lvs.lvs1 }}"  }
 
 - hosts: lvs02
+  gather_facts: False
   remote_user: root
   vars_files:
-    - common_vars.yml
-    - network_vars.yml
-
+    - vars/common.yml
+    - vars/config.yml
+    
   roles:
     - { role: ../lvs-web-dr/roles/deploy , site: "{{ lvs.lvs2 }}"  }
 

@@ -1,0 +1,16 @@
+- name: restart keepalived
+  lxc_container:
+    name: "{{ container_name }}"
+    state: start
+    container_command: |
+      systemctl restart keepavlived
+
+- name: restart lvs-setup
+  lxc_container:
+    name: "{{ container_name }}"
+    state: start
+    container_command: |
+      systemctl restart lvs-setup
+
+      
+  

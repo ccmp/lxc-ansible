@@ -1,36 +1,40 @@
 - hosts: lvs01
+  gather_facts: False
   remote_user: root
   vars_files:
-    - common_vars.yml
-    - network_vars.yml
+    - vars/common.yml
+    - vars/config.yml
 
   roles:
     - { role: ../lvs-web-dr/roles/destroy , site: "{{ lvs.lvs1 }}"  }
 
 - hosts: lvs02
+  gather_facts: False
   remote_user: root
   vars_files:
-    - common_vars.yml
-    - network_vars.yml
+    - vars/common.yml
+    - vars/config.yml
 
   roles:
     - { role: ../lvs-web-dr/roles/destroy , site: "{{ lvs.lvs2 }}"  }
 
 - hosts: web01
+  gather_facts: False
   remote_user: root
   vars_files:
-    - common_vars.yml
-    - network_vars.yml
-
+    - vars/common.yml
+    - vars/config.yml
+   
   roles:
     - { role: ../lvs-web-dr/roles/destroy , site: "{{ web.web1 }}"  }
 
 - hosts: web02
+  gather_facts: False
   remote_user: root
   vars_files:
-    - common_vars.yml
-    - network_vars.yml
-
+   - vars/common.yml
+   - vars/config.yml
+   
   roles:
     - { role: ../lvs-web-dr/roles/destroy , site: "{{ web.web2 }}"  }
 

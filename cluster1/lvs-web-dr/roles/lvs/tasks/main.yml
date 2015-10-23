@@ -1,6 +1,3 @@
-- name: debug
-  debug: var=site
-  
 - name: Create container directory
   file: path={{ container_dir }} state=directory
 - name: Extract base container
@@ -65,7 +62,7 @@
     mode=0644
 
 - name: Archive rootfs for copy
-  shell: tar c config.prd rootfs | gzip > {{ manager.archive_dir }}/{{ container_name }}.tar.gz
+  shell: tar c config.prd rootfs | gzip > {{ archive_dir }}/{{ container_name }}.tar.gz
   args:
     chdir: '{{ container_dir }}'    
 
@@ -76,7 +73,7 @@
 
 - name: fetch rootfs archive
   fetch: >
-    src={{ manager.archive_dir }}/{{ container_name }}.tar.gz
+    src={{ archive_dir }}/{{ container_name }}.tar.gz
     dest={{ local_archive_dir }}/
     flat=yes
       

@@ -1,0 +1,8 @@
+container_name: "{{ site.container_name }}"
+hostname: "{{ site.hostname | default(site.container_name) }}"
+
+personal_conf_dir: "config/{{ container_name }}"
+
+LVS_GLOBAL_IP: "{{ site.global_ip }}"
+LVS_LOCAL_IP: "{{ site.local_ip }}"
+

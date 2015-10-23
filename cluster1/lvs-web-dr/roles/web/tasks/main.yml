@@ -61,7 +61,6 @@
     dest={{ container_dir }}/config.prd
     mode='0644'
 
-
 - name: Archive rootfs for copy
   shell: tar c config.prd rootfs | gzip > {{ archive_dir }}/{{ container_name }}.tar.gz
   args:

@@ -1,9 +1,0 @@
-- hosts: lvs
-  remote_user: root
-#  vars:
-#    vlan_interface: eth1
-  roles:
-#    - { role: lxc }
-    - { role: vlan , vlan: "{{ lvshost.vlan }}" } 
-    - { role: lvs }
-    

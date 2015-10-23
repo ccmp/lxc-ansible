@@ -1,9 +1,0 @@
-# vlan id 10
-auto {{ vlan_interface }}.10 lbr10
-
-iface {{ vlan_interface }}.10 inet manual
-      vlan-raw-device {{ vlan_interface }}
-
-iface lbr10 inet manual
-      bridge_ports {{ vlan_interface }}.10
-      bridge_wait 0      
