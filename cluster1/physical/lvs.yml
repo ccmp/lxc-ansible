@@ -1,8 +1,0 @@
-- hosts: lvs
-  remote_user: root
-  vars:
-    vlan_interface: eth1
-  roles:
-    - lxc
-    - lvs
-    

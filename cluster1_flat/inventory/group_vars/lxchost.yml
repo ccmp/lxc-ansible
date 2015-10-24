@@ -1,0 +1,4 @@
+lxchost:
+  lxc_dir: /var/lib/lxc
+  tmp_archive_dir: /tmp
+  

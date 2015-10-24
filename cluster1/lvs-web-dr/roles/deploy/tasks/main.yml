@@ -1,7 +1,7 @@
 - name: Copy container archive
   copy: >
     src={{ local_archive_dir }}/{{ container_name }}.tar.gz
-    dest={{ remote_archive_dir }}/{{ container_name }}.tar.gz
+    dest={{ tmp_archive_dir }}/{{ container_name }}.tar.gz
 
 - name: Stopped provious container
   shell: lxc-stop -n {{ container_name }}
@@ -12,23 +12,23 @@
   ignore_errors: yes
   
 - name: Remove privious container directory
-  file: path={{ lxc_dir }}/{{ container_name }} state=absent
+  file: path={{ container_dir }} state=absent
     
 - name: Create container directory
-  file: path={{ lxc_dir }}/{{ container_name }} state=directory
+  file: path={{ container_dir }} state=directory
   
 - name: Extract container archive
-  shell: tar xfz {{ remote_archive_dir }}/{{ container_name }}.tar.gz
+  shell: tar xfz {{ tmp_archive_dir }}/{{ container_name }}.tar.gz
   args:
-    chdir: '{{ lxc_dir }}/{{ container_name }}'
+    chdir: '{{ container_dir }}'
     
 - name: Remove archive 
-  file: path={{ remote_archive_dir }}/{{ container_name }}.tar.gz state=absent
+  file: path={{ tmp_archive_dir }}/{{ container_name }}.tar.gz state=absent
   
 - name: Rename config filename 
   shell: mv config.prd config
   args:
-    chdir: '{{ lxc_dir }}/{{ container_name }}'
+    chdir: '{{ container_dir }}'
 
 - name: Start Container
   shell: lxc-start -n {{ container_name }} -d

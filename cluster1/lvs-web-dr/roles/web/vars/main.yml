@@ -1,5 +1,9 @@
 base_container: "{{ site.base_container }}"
 container_name: "{{ site.container_name }}"
+hostname: "{{ site.hostname | default(site.container_name) }}"
+
 WEB_IP: "{{ site.local_ip }}"
 
-container_dir: "{{ lxc_dir }}/{{ container_name }}"
+container_dir: "{{ lxchost.lxc_dir }}/{{ container_name }}"
+repo_dir: "{{ manager.repo_dir }}"
+archive_dir: "{{ manager.archive_dir }}"

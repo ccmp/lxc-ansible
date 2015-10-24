@@ -1,8 +1,0 @@
-- hosts: web 
-  remote_user: root
-  vars:
-    vlan_interface: eth1
-  roles:
-    - lxc
-    - web  
-    

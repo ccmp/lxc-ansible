@@ -1,6 +1,3 @@
-- name: debug
-  debug: var=site
-  
 - name: Create container directory
   file: path={{ container_dir }} state=directory
 - name: Extract base container
@@ -68,6 +65,11 @@
   shell: tar c config.prd rootfs | gzip > {{ archive_dir }}/{{ container_name }}.tar.gz
   args:
     chdir: '{{ container_dir }}'    
+
+- name: destroy container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: absent
 
 - name: fetch rootfs archive
   fetch: >

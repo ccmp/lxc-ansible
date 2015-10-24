@@ -61,11 +61,15 @@
     dest={{ container_dir }}/config.prd
     mode='0644'
 
-
 - name: Archive rootfs for copy
   shell: tar c config.prd rootfs | gzip > {{ archive_dir }}/{{ container_name }}.tar.gz
   args:
     chdir: '{{ container_dir }}'
+
+- name: destroy container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: absent
 
 - name: fetch rootfs archive
   fetch: >

@@ -1,4 +1,0 @@
-vlan:
-  id: 20
-  bridge: lbr20
-  
