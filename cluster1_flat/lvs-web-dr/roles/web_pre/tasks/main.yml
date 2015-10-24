@@ -17,38 +17,38 @@
     dest={{ container_dir }}/config
     mode='0644'
       
-- name: Create Directory for Web Setup
-  file: state=directory path={{ container_dir }}/rootfs/work
-    
-- name: Web Setup
-  copy: >
-    src={{ personal_conf_dir}}/{{ item.name }} 
-    dest={{ container_dir }}/rootfs/{{ item.name }}
-    owner=root
-    group=root
-    mode={{ item.mode }}
-  with_items:
-    - name: '/work/web-setup.sh'
-      mode: '0755'
-    - name: '/etc/systemd/system/web-setup.service'
-      mode: '0644'
-        
-- name: Enable web-setup.service
-  file: >
-    path='{{ container_dir }}/rootfs/etc/systemd/system/multi-user.target.wants/web-setup.service'
-    src='../web-setup.service'
-    state=link
-
-- name: Setup index.html
-  template: >
-    src={{ personal_conf_dir }}/{{ item.name }}
-    dest={{ container_dir }}/rootfs/{{ item.name }}
-    owner=root
-    group=root
-    mode={{ item.mode }}
-  with_items:
-    - name: '/var/www/html/index.html'
-      mode: '0644'
+#- name: Create Directory for Web Setup
+#  file: state=directory path={{ container_dir }}/rootfs/work
+#    
+#- name: Web Setup
+#  copy: >
+#    src={{ personal_conf_dir}}/{{ item.name }} 
+#    dest={{ container_dir }}/rootfs/{{ item.name }}
+#    owner=root
+#    group=root
+#    mode={{ item.mode }}
+#  with_items:
+#    - name: '/work/web-setup.sh'
+#      mode: '0755'
+#    - name: '/etc/systemd/system/web-setup.service'
+#      mode: '0644'
+#        
+#- name: Enable web-setup.service
+#  file: >
+#    path='{{ container_dir }}/rootfs/etc/systemd/system/multi-user.target.wants#/web-setup.service'
+#    src='../web-setup.service'
+#    state=link
+#
+#- name: Setup index.html
+#  template: >
+#    src={{ personal_conf_dir }}/{{ item.name }}
+#    dest={{ container_dir }}/rootfs/{{ item.name }}
+#    owner=root
+#    group=root
+#    mode={{ item.mode }}
+# with_items:
+#   - name: '/var/www/html/index.html'
+#      mode: '0644'
 
 - name: run container
   lxc_container:

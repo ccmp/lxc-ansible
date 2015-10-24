@@ -59,8 +59,8 @@
     
 - name: Create lxc config for production
   copy: >
-    src= {{ personal_conf_dir }}/var/lib/lxc/config.prd
-    dest={{container_dir}}/config.prd
+    src={{ personal_conf_dir }}/var/lib/lxc/config.prd
+    dest={{ container_dir }}/config.prd
     mode=0644
 
 - name: Archive rootfs for copy

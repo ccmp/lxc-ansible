@@ -1,19 +1,13 @@
-- name: stat container
-  shell: lxc-ls | {{ container_name }} 
-  
 - name: Copy container archive
   copy: >
     src={{ local_archive_dir }}/{{ container_name }}.tar.gz
     dest={{ tmp_archive_dir }}/{{ container_name }}.tar.gz
 
-- name: Stopped provious container
-  shell: lxc-stop -n {{ container_name }}
-  ignore_errors: yes
-  
-- name: Destroy provious container
-  shell: lxc-destroy -n {{ container_name }}
-  ignore_errors: yes
-  
+- name: Stop and destroy provious container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: absent
+      
 - name: Remove privious container directory
   file: path={{ container_dir }} state=absent
     
@@ -33,8 +27,13 @@
   args:
     chdir: '{{ container_dir }}'
 
+# wait for network being ready.
 - name: Start Container
-  shell: lxc-start -n {{ container_name }} -d
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      for i in `seq 1 10`;do systemctl is-active network.target && break ;sleep 10;done
 
 - name: Remove local archive
   file: path={{ local_archive_dir }}/{{ container_name }}.tar.gz state=absent

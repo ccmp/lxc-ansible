@@ -1,11 +1,11 @@
-- name: stat container directory
+- name: Stat container directory
   stat: path={{ container_dir }}
   register: rc
   failed_when: rc.stat.isdir == ' false '
   
-- name: copy hostname
+- name: Copy hostname
   copy: >
-    src={{ parsonal_conf_dir }}/{{ item.name }}
+    src={{ personal_conf_dir }}/{{ item.name }}
     dest={{ container_dir }}/rootfs/{{ item.name }} mode={{ item.mode }}
   with_items:
   - name: '/etc/hostname'
@@ -48,4 +48,17 @@
     src='../lvs-setup.service'
     state=link
 
-      
+- name: Run container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+  register: lxc_stat
+
+- name: Wait for network being ready,if container has started just now.
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      for i in `seq 1 10`;do systemctl is-active network.target && break ;sleep 10;done
+  when: lxc_stat.changed == ' true '
+  
