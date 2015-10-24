@@ -5,6 +5,3 @@
 - name: Destroy provious container
   shell: lxc-destroy -n {{ container_name }}
   ignore_errors: yes
-  
-
-  

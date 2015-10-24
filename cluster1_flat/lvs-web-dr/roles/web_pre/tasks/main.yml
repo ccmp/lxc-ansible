@@ -76,4 +76,3 @@
     src={{ archive_dir }}/{{ container_name }}.tar.gz
     dest={{ local_archive_dir }}/
     flat=yes
-    

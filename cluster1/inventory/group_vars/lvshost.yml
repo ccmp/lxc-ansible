@@ -6,11 +6,3 @@ lvshost:
       iface: "eth1"
     - id: "20"
       iface: "eth1"
-      
-      
-      
-      
-      
-      
-      
-  
