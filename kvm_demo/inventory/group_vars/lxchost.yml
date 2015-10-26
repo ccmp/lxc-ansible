@@ -1,0 +1,9 @@
+lxchost:
+  lxc_dir: /var/lib/lxc
+  tmp_archive_dir: /tmp
+  manager_host: v205
+  
+manager:
+  repo_dir: /work/image
+  archive_dir: /work/archives
+

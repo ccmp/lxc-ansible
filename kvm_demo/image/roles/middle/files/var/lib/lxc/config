@@ -1,0 +1,18 @@
+lxc.network.type = veth
+lxc.network.flags = up
+lxc.network.link = lbr01
+lxc.network.ipv4 = 192.168.1.101/24
+lxc.network.ipv4.gateway = 192.168.1.254
+
+lxc.rootfs = {{ middle_container_dir }}/rootfs
+
+# Common configuration
+lxc.include = /usr/share/lxc/config/debian.common.conf
+
+# Container specific configuration
+lxc.mount = {{ middle_container_dir }}/fstab
+lxc.utsname = {{ middle_container_name }}
+lxc.arch = amd64
+lxc.autodev = 1
+lxc.kmsg = 0
+

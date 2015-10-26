@@ -1,0 +1,9 @@
+# vlan id {{ item.id }}
+auto {{ item.iface }}.{{ item.id }} lbr{{ item.id }}
+
+iface {{ item.iface }}.{{ item.id }} inet manual
+      vlan-raw-device {{ item.iface }}
+
+iface lbr{{ item.id }} inet manual
+      bridge_ports {{ item.iface }}.{{ item.id }}
+      bridge_wait 0      
