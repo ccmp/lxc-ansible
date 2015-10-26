@@ -19,6 +19,3 @@ lvs
 
 [webhost:children]
 web
-
-[manager:children]
-mng

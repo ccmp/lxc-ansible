@@ -1,10 +1,4 @@
-- name: Stopped provious container
-  shell: lxc-stop -n {{ container_name }}
-  ignore_errors: yes
-  
-- name: Destroy provious container
-  shell: lxc-destroy -n {{ container_name }}
-  ignore_errors: yes
-  
-
-  
+- name: Destroy Container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: absent
