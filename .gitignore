@@ -1,2 +1,3 @@
 *~
-tmpwork/
+*.old
+*.tmp/
