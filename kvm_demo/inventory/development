@@ -1,13 +1,13 @@
 [mng]
-v205
+mng01
 
 [lvs]
-v011
-v012
+lvs01
+lvs02
 
 [web]
-v051
-v052
+web01
+web02
 
 [lxchost:children]
 mng
