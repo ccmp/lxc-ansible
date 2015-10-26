@@ -4,15 +4,31 @@
 - name: Create archive directory
   file: path={{ manager.archive_dir }} state=directory
 
+- name: Check whether interfaces.d/ is used.
+  shell: grep -E "^ *source-directory */etc/network/interfaces.d *" /etc/network/interfaces > /dev/null
+  register: greprc
+  changed_when: greprc.rc != 0
+
+- name: Let interfaces.d/ used
+  lineinfile: >
+    dest=/etc/network/interfaces 
+    line="source-directory /etc/network/interfaces.d"
+    create=yes
+  when: greprc.rc != 0
+
 - name: Copy Network config
-  copy: src=../files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
-  with_items:
-    - { name: '/etc/lxc/default.conf', mode: '0644' }
-    - { name: '/etc/network/interfaces.d/lbr01', mode: '0600' }
+  template: >
+    src=../files/etc/network/interfaces.d/lbrX
+    dest=/etc/network/interfaces.d/{{ item.name }}
+    mode=0644
+  with_items: mnghost.bridge
   notify: restart network
   
 - name: Copy LXC default.conf
-  copy: src=../files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+  template: >
+    src=../files/{{ item.name }}
+    dest={{ item.name }}
+    mode={{ item.mode }}
   with_items:
     - { name: '/etc/lxc/default.conf', mode: '0644' }
  

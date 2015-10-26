@@ -1,3 +1,22 @@
+- name: Check whether interfaces file exists.
+  stat: path=/etc/network/interfaces
+  register: statrc
+  changed_when: statrc.stat.exists == ' false '
+  
+- name: Check whether interfaces.d/ is used.
+  shell: grep -E "^ *source-directory */etc/network/interfaces.d *" /etc/network/interfaces > /dev/null
+  register: greprc
+  failed_when: greprc.rc not in [0,1] 
+  changed_when: greprc.rc == 1
+  when: not statrc.stat.exists == ' false '
+
+- name: Let interfaces.d/ used
+  lineinfile: >
+    dest=/etc/network/interfaces 
+    line="source-directory /etc/network/interfaces.d"
+    create=yes
+  when: greprc.rc == 1 or statrc.stat.exists == ' false '
+  
 - name: Backup vlan file
   shell: >
     [ ! -f /etc/network/interfaces.d/vlan{{ item.id }} ] && exit 0;

@@ -1,0 +1,10 @@
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars_conf/common.yml
+    - vars_conf/config.yml
+  roles:
+    - { role: ../lvs-web-dr/roles/lvs_conf , site: "{{ lvs.lvs1 }}" }
+    - { role: ../lvs-web-dr/roles/lvs_conf , site: "{{ lvs.lvs2 }}" }
