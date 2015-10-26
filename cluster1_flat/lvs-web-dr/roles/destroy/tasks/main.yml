@@ -2,7 +2,3 @@
   lxc_container:
     name: "{{ container_name }}"
     state: absent
-
-  
-
-  
