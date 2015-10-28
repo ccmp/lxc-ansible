@@ -1,10 +1,10 @@
 - name: stat config top directory
-  stat: path=config
+  stat: path={{ config_dir }}
   register: rc
   failed_when: rc.stat.isdir == 'false'
 
 - name: Create personal config directory
-  file: path=config/{{ container_name }} state=directory
+  file: path={{ config_dir }}/{{ container_name }} state=directory
 
 - name: Create diretory tree
   file:

@@ -1,2 +1,17 @@
 local_archive_dir: /tmp
+config_dir: config
+
+common:
+  global_network: 10.10.1.0
+  global_subnet: 24
+  local_network: 192.168.10.0
+  local_subnet: 24
+
+gateway:
+  ip: 10.10.1.1
+  mac: 08:00:27:d7:0f:2f
+  
+service:
+  name: service1
+  vlanid: 10
   
