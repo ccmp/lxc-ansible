@@ -4,26 +4,28 @@
   failed_when: rc.stat.isdir == ' false '
 
 - name: Copy hostname
-  copy: src={{ personal_conf_dir }}/{{ item.name }} dest={{ container_dir }}/rootfs/{{ item.name }} mode={{ item.mode }}
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
   with_items:
-  - name: '/etc/hostname'
-    mode: '0644'
+  - { name: '/etc/hostname', mode: '0644', owner: 'root', group: 'root' }
     
 - name: Create Directory for Web Setup
   file: state=directory path={{ container_dir }}/rootfs/work
     
 - name: Web Setup
   copy: >
-    src={{ personal_conf_dir}}/{{ item.name }} 
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
     dest={{ container_dir }}/rootfs/{{ item.name }}
-    owner=root
-    group=root
     mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
   with_items:
-    - name: '/work/web-setup.sh'
-      mode: '0755'
-    - name: '/etc/systemd/system/web-setup.service'
-      mode: '0644'
+    - { name: '/work/web-setup.sh', mode: '0755', owner: 'root', group: 'root' }
+    - { name: '/etc/systemd/system/web-setup.service', mode: '0644', owner: 'root', group: 'root' } 
   notify:
     - restart web-setup
     
@@ -34,27 +36,26 @@
     state=link
 
 - name: Setup index.html
-  template: >
-    src={{ personal_conf_dir }}/{{ item.name }}
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
     dest={{ container_dir }}/rootfs/{{ item.name }}
-    owner=root
-    group=root
     mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
   with_items:
-    - name: '/var/www/html/index.html'
-      mode: '0644'
+    - { name: '/var/www/html/index.html', mode: '0644', owner: 'root', group: 'root' }
 
-- name: Run container
-  lxc_container:
-    name: "{{ container_name }}"
-    state: started
-  register: lxc_stat
+#- name: Run container
+#  lxc_container:
+#    name: "{{ container_name }}"
+#    state: started
+#  register: lxc_stat
 
-- name: Wait for network being ready,if container has started just now.
-  lxc_container:
-    name: "{{ container_name }}"
-    state: started
-    container_command: |
-      for i in `seq 1 10`;do systemctl is-active network.target && break ;sleep 10;done
-  when: lxc_stat.changed == ' true '
+#- name: Wait for network being ready,if container has started just now.
+#  lxc_container:
+#    name: "{{ container_name }}"
+#    state: started
+#    container_command: |
+#      for i in `seq 1 10`;do systemctl is-active network.target && break ;sleep 10;done
+#  when: lxc_stat.changed == ' true '
 

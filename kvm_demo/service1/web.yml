@@ -6,7 +6,7 @@
     - vars/config.yml
   vars:
     pcon: "{{ web.web1 }}"
-    
+
   pre_tasks:
     - name: stat container
       shell: lxc-info -n {{ pcon.container_name }}
@@ -14,15 +14,10 @@
       failed_when: lxc_info.rc not in [0,1]
       changed_when: lxc_info.rc == 1
   roles:
-    - role: ../lvs-web-dr/roles/web_pre
-      when: "lxc_info.rc == 1"
-      delegate_to: "{{ lxchost.manager_host }}"
-      site: "{{ pcon }}"
-    - role: ../lvs-web-dr/roles/deploy
-      when: "lxc_info.rc == 1"
-      site: "{{ pcon }}"  
-    - role: ../lvs-web-dr/roles/web_post
-      site: "{{ pcon }}"  
+    - { role: ../lvs-web-dr/roles/create, when: "lxc_info.rc == 1", delegate_to: "{{ lxchost.manager_host }}", site: "{{ pcon }}" }
+    - { role: ../lvs-web-dr/roles/deploy, when: "lxc_info.rc == 1", site: "{{ pcon }}" }
+    - { role: ../lvs-web-dr/roles/web_post, site: "{{ pcon }}" }
+    - { role: ../lvs-web-dr/roles/start, site: "{{ pcon }}" }
 
 - hosts: web02
   gather_facts: False
@@ -32,7 +27,7 @@
     - vars/config.yml
   vars:
     pcon: "{{ web.web2 }}"
-    
+
   pre_tasks:
     - name: stat container
       shell: lxc-info -n {{ pcon.container_name }}
@@ -40,14 +35,10 @@
       failed_when: lxc_info.rc not in [0,1]
       changed_when: lxc_info.rc == 1
   roles:
-    - role: ../lvs-web-dr/roles/web_pre
-      when: "lxc_info.rc == 1"
-      delegate_to: "{{ lxchost.manager_host }}"
-      site: "{{ pcon }}"
-    - role: ../lvs-web-dr/roles/deploy
-      when: "lxc_info.rc == 1"
-      site: "{{ pcon }}"  
-    - role: ../lvs-web-dr/roles/web_post
-      site: "{{ pcon }}"
+    - { role: ../lvs-web-dr/roles/create, when: "lxc_info.rc == 1", delegate_to: "{{ lxchost.manager_host }}", site: "{{ pcon }}" }
+    - { role: ../lvs-web-dr/roles/deploy, when: "lxc_info.rc == 1", site: "{{ pcon }}" }
+    - { role: ../lvs-web-dr/roles/web_post, site: "{{ pcon }}" }
+    - { role: ../lvs-web-dr/roles/start, site: "{{ pcon }}" }
+
 
 

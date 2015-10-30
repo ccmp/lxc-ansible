@@ -22,10 +22,10 @@
 - name: Remove archive 
   file: path={{ tmp_archive_dir }}/{{ container_name }}.tar.gz state=absent
   
-- name: Rename config filename 
-  shell: mv config.prd config
-  args:
-    chdir: '{{ container_dir }}'
+#- name: Rename config filename 
+#  shell: mv config.prd config
+#  args:
+#    chdir: '{{ container_dir }}'
 
 # wait for network being ready.
 - name: Start Container

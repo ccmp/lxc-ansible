@@ -9,7 +9,7 @@ common:
 
 gateway:
   ip: 10.10.1.1
-  mac: 08:00:27:d7:0f:2f
+  mac: 52:54:00:11:00:ce
   
 service:
   name: service1
