@@ -3,6 +3,14 @@
   register: rc
   failed_when: rc.stat.isdir == ' false '
 
+- name: Create lxc config for this host. 
+  template: >
+    src={{ personal_conf_dir }}/config
+    dest={{ container_dir }}/config
+    mode='0644'
+  notify:
+    - restart container
+
 - name: Copy hostname
   copy: >
     src={{ personal_conf_dir }}/rootfs/{{ item.name }}

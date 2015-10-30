@@ -21,12 +21,13 @@
     
 - name: Remove archive 
   file: path={{ tmp_archive_dir }}/{{ container_name }}.tar.gz state=absent
-  
-#- name: Rename config filename 
-#  shell: mv config.prd config
-#  args:
-#    chdir: '{{ container_dir }}'
 
+- name: Create lxc config for this host. 
+  template: >
+    src={{ personal_conf_dir }}/config
+    dest={{ container_dir }}/config
+    mode='0644'
+    
 # wait for network being ready.
 - name: Start Container
   lxc_container:
