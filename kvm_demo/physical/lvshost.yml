@@ -1,8 +1,0 @@
-- hosts: lvs
-  remote_user: root
-  gather_facts: False
-  roles:
-    - lxchost
-    - { role: vlan , vlan: "{{ lvshost.vlan }}" } 
-    - lvshost 
-    
