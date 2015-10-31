@@ -1,7 +1,0 @@
-- hosts: mng
-  remote_user: root
-  gather_facts: False
-  roles:
-    - lxchost
-    - mnghost 
-    

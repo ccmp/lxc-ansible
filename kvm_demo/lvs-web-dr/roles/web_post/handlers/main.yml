@@ -1,9 +1,0 @@
-- name: restart web-setup
-  lxc_container:
-    name: "{{ container_name }}"
-    state: started
-    container_command: |
-      systemctl restart web-setup
-
-      
-  

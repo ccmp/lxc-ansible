@@ -1,9 +1,0 @@
-container_name: "{{ site.container_name }}"
-#hostname: "{{ site.hostname | default(site.container_name) }}"
-
-#WEB_IP: "{{ site.local_ip }}"
-
-personal_conf_dir: "config/{{ container_name }}"
-
-container_dir: "{{ lxchost.lxc_dir }}/{{ container_name }}"
-

@@ -1,4 +1,0 @@
-- name: Load ip_tables modules on host
-  shell: modprobe ip_tables
-  ignore_errors: yes
-  

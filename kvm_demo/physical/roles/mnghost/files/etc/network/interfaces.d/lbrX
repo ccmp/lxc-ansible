@@ -1,9 +1,0 @@
-auto {{ item.name }}
-iface {{ item.name }} inet static
-	bridge_ports none
-	bridge_fd 0
-	bridge_maxwait 0
-	address {{ item.ip }}
-	netmask {{ item.mask }}
-	up iptables -t nat -A POSTROUTING -o {{ item.iface }} -j MASQUERADE
-
