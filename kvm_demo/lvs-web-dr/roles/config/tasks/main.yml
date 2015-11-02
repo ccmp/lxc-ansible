@@ -26,5 +26,3 @@
     mode={{ item.mode | default(def_perm.fmode) }}
   with_items: lxcconf.file
   when: item.copy | default(true)
-
-  
