@@ -22,3 +22,12 @@ web
 
 [mnghost:children]
 mng
+
+[LVS1]
+lvs01
+[LVS2]
+lvs02
+[WEB1]
+web01
+[WEB2]
+web02
