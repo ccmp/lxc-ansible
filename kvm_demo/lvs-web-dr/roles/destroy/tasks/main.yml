@@ -1,0 +1,4 @@
+- name: Destroy Container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: absent
