@@ -14,10 +14,19 @@
     - gcc
     - tcpdump
     - strace
+    - vlan
 
 - easy_install: name=pip
 
 - pip: name=lxc-python2 state=latest
 
 - sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes
+
+- copy: src=../files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+  with_items:
+    - { name: '/etc/lxc/default.conf', mode: '0644' }
+    - { name: '/etc/network/interfaces.d/lbr01', mode: '0600' }
+    - { name: '/etc/network/interfaces.d/lbr10', mode: '0600' }
+
+- service: name=networking state=restarted enabled=yes
 

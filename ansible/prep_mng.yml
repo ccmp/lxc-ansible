@@ -1,0 +1,10 @@
+# Usage:
+#  ansible-playbook -i ./inventory/development ./run_web.yml -v
+#
+
+- hosts: web
+  remote_user: root
+
+  roles:
+    - prep_mng
+
