@@ -1,8 +1,0 @@
-- hosts: web 
-  remote_user: root
-  gather_facts: False
-  roles:
-    - lxchost
-    - { role: vlan , vlan: "{{ webhost.vlan }}" } 
-    - webhost  
-    

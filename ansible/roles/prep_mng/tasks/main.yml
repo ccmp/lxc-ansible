@@ -15,6 +15,7 @@
     - tcpdump
     - strace
     - vlan
+    - ca-certificates
 
 - easy_install: name=pip
 
