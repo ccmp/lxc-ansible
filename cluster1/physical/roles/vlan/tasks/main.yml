@@ -1,0 +1,38 @@
+- name: Backup vlan file
+  shell: >
+    [ ! -f /etc/network/interfaces.d/vlan{{ item.id }} ] && exit 0;
+    cp /etc/network/interfaces.d/vlan{{ item.id }} /tmp/vlan{{ item.id }}.bk
+  with_items: vlan
+  
+- name: create vlan interface and its bridge.
+  template: >
+    src=../files/etc/network/interfaces.d/vlanX
+    dest=/etc/network/interfaces.d/vlan{{ item.id }}
+    mode=0644
+  with_items: vlan
+  register: vlanrc
+
+- name: ifdown privious interface and its brigde
+  shell: >
+    [ ! -f /tmp/vlan{{ item.item.id }}.bk ] && exit 0;
+    ifdown -i /tmp/vlan{{ item.item.id }}.bk `sed -ne 's/^ *iface *\(lbr[^ ]*\) .*/\1/gp' /tmp/vlan{{ item.item.id }}.bk`;
+    ifdown -i /tmp/vlan{{ item.item.id }}.bk `sed -ne 's/^ *iface *\(eth[^ ]*\) .*/\1/gp' /tmp/vlan{{ item.item.id }}.bk`;
+    rm /tmp/vlan{{ item.item.id }}.bk
+  with_items: vlanrc.results
+  when: item.changed
+
+- name: rm backup vlan file
+  shell: >
+    [ ! -f /tmp/vlan{{ item.id }}.bk ] && exit 0;
+    rm /tmp/vlan{{ item.id }}.bk
+  with_items: vlan
+    
+- name: ifup interface and its brigde
+  shell: >
+    ifup {{ item.item.iface }}.{{ item.item.id }};
+    ifup lbr{{ item.item.id }}
+  with_items: vlanrc.results
+  when: item.changed
+
+
+

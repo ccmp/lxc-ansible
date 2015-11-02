@@ -1,0 +1,28 @@
+- hosts: mng
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars/common.yml
+    - vars/config.yml
+  roles:
+    - { role: ../lvs-web-dr/roles/web , site: "{{ web.web1 }}" }
+    - { role: ../lvs-web-dr/roles/web , site: "{{ web.web2 }}" }
+            
+- hosts: web01
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars/common.yml
+    - vars/config.yml
+  roles:
+    - { role: ../lvs-web-dr/roles/deploy , site: "{{ web.web1 }}"  }
+
+- hosts: web02
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars/common.yml
+    - vars/config.yml
+  roles:
+    - { role: ../lvs-web-dr/roles/deploy , site: "{{ web.web2 }}"  }
+

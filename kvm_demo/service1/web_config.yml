@@ -1,0 +1,19 @@
+- hosts: 127.0.0.1
+  connection: local
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars/common.yml
+    - vars/config.yml
+    - vars/template.yml
+
+  roles:
+    - role: ../lvs-web-dr/roles/config
+      site: "{{ web.web1 }}"
+      conf: "{{ web_config }}"
+      lxcconf: "{{ web_lxcconfig }}"
+    - role: ../lvs-web-dr/roles/config
+      site: "{{ web.web2 }}"
+      conf: "{{ web_config }}"
+      lxcconf: "{{ web_lxcconfig }}"
+

@@ -1,0 +1,40 @@
+
+- file: path={{ middle_container_dir }} state=absent
+- file: path={{ middle_container_dir }} state=directory
+- file: path={{ repo_dir }} state=directory 
+
+- shell: tar xfz {{ repo_dir }}/{{ base_container_name }}.tar.gz
+  args:
+    chdir: '{{ middle_container_dir }}'
+
+- template: src=../files/var/lib/lxc/config dest={{ middle_container_dir }}/config mode='0644'
+
+- template: src=../files/{{ item.name }} dest={{ middle_container_dir }}/rootfs/{{ item.name }} mode={{ item.mode }}
+  with_items:
+    - { name: '/etc/hostname', mode: '0600' }
+    
+- lxc_container: 
+    name: '{{ middle_container_name }}'
+    container_log: true
+    template: debian
+    template_options: --arch amd64 --release jessie
+    state: stopped
+    container_command: |
+      apt-get update
+      apt-get -y install {{ pkgs }}
+      apt-get clean
+      {{ extra_tasks }}
+  environment:
+    MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
+    SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
+
+- shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ middle_container_name }}.tar.gz
+  args:
+    chdir: '{{ middle_container_dir }}'
+
+- stat: path={{ repo_dir }}/{{ middle_container_name }}.tar.gz 
+  register: tgz
+
+- shell: dpkg-query -W -f='${binary:Package}\t\t\t${Version}\n' --admindir={{ middle_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/.pkgs.{{ middle_container_name }}
+ 
+

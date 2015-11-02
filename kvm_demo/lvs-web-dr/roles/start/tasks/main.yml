@@ -1,0 +1,13 @@
+- name: Run container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+  register: lxc_stat
+
+- name: Wait for network being ready,if container has started just now.
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      for i in `seq 1 10`;do systemctl is-active network.target && break ;sleep 10;done
+  when: lxc_stat.changed == ' true '

@@ -1,0 +1,24 @@
+# Template used to create this container: /usr/share/lxc/templates/lxc-download
+# Parameters passed to the template:
+# For additional config options, please look at lxc.container.conf(5)
+
+# Distribution configuration
+lxc.include = /usr/share/lxc/config/debian.common.conf
+lxc.include = /usr/share/lxc/config/debian.userns.conf
+lxc.arch = x86_64
+
+# Container specific configuration
+lxc.rootfs = /var/lib/lxc/web1-s1/rootfs
+lxc.utsname = web1
+
+# Network configuration
+lxc.network.type = veth
+lxc.network.link = lbr10
+lxc.network.flags = up
+#lxc.network.hwaddr = 00:16:3e:xx:xx:xx
+lxc.network.ipv4 = 192.168.10.51/24
+#
+lxc.network.type = veth
+lxc.network.link = lbr1
+lxc.network.flags = up
+#

@@ -1,0 +1,4 @@
+---
+- include: mnghost.yml
+- include: lvshost.yml
+- include: webhost.yml

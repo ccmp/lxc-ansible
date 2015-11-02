@@ -1,0 +1,9 @@
+base_container: "{{ site.base_container }}"
+container_name: "{{ site.container_name }}"
+
+personal_conf_dir: "config/{{ container_name }}"
+common_conf_dir: "config/common"
+
+container_dir: "{{ lxchost.lxc_dir }}/{{ container_name }}"
+repo_dir: "{{ manager.repo_dir }}"
+archive_dir: "{{ manager.archive_dir }}"

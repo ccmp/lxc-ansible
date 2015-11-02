@@ -1,0 +1,5 @@
+container_name: "{{ site.container_name }}"
+
+lxc_dir: "{{ lxchost.lxc_dir }}}"
+tmp_archive_dir: "{{ lxchost.tmp_archive_dir }}"
+container_dir: "{{ lxchost.lxc_dir }}/{{ container_name }}"
