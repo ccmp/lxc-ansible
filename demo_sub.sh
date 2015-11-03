@@ -25,8 +25,12 @@ done
 
 wait
 
+echo "Physical Playbook"
 time ansible-playbook -i inventory/development physical/site.yml
+echo "Image Playbook"
 time ansible-playbook -i inventory/development image/site.yml
+echo "Config Playbook"
 time ansible-playbook -i inventory/development service1/site_config.yml
+echo "Deploy Playbook"
 time ansible-playbook -i inventory/development service1/site.yml
 
