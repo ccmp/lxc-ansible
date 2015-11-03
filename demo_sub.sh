@@ -8,9 +8,14 @@ pip install ansible
 cat /dev/null >  ~/.ssh/known_hosts
 ssh-keyscan  github.com >> ~/.ssh/known_hosts
 
-git clone git@github.com:ccmp/lxc-ansible.git
+cd ~/
+if [ ! -d lxc-ansible ]; then
+	git clone git@github.com:ccmp/lxc-ansible.git
+fi
+
 cd lxc-ansible/
 git checkout kttest00
+git pull
 cd kvm_demo/
 
 for hst in mng01 gw1 lvs01 lvs02 web01 web02 ; do
