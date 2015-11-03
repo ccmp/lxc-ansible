@@ -19,8 +19,11 @@ git pull
 cd kvm_demo/
 
 for hst in mng01 gw1 lvs01 lvs02 web01 web02 ; do
-ssh-keyscan  $hst >> ~/.ssh/known_hosts
+	ssh-keyscan  $hst >> ~/.ssh/known_hosts
+	ssh $hst apt-get install -y python > /dev/null &
 done
+
+wait
 
 time ansible-playbook -i inventory/development physical/site.yml
 time ansible-playbook -i inventory/development image/site.yml
