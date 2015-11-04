@@ -8,3 +8,4 @@ apt-get install -y screen
 chmod +x $SCRIPT
 screen  -dm bash -c "$SCRIPT ; exec bash"
 
+date 
