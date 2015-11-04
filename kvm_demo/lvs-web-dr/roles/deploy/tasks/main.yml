@@ -1,8 +1,3 @@
-#- name: Copy container archive
-#  copy: >
-#    src={{ local_archive_dir }}/{{ container_name }}.tar.gz
-#    dest={{ tmp_archive_dir }}/{{ container_name }}.tar.gz
-
 - name: Stop and destroy provious container
   lxc_container:
     name: "{{ container_name }}"
@@ -18,28 +13,10 @@
   unarchive: >
     src={{ repo_dir }}/{{ base_container }}.tar.gz
     dest={{ container_dir }}
-#  shell: tar xfz {{ tmp_archive_dir }}/{{ container_name }}.tar.gz
-#  args:
-#    chdir: '{{ container_dir }}'
-    
-#- name: Remove archive 
-#  file: path={{ tmp_archive_dir }}/{{ container_name }}.tar.gz state=absent
 
 - name: Create lxc config for this host. 
   template: >
     src={{ personal_conf_dir }}/config
     dest={{ container_dir }}/config
     mode='0644'
-    
-# wait for network being ready.
-#- name: Start Container
-#  lxc_container:
-#    name: "{{ container_name }}"
-#    state: started
-#    container_command: |
-#      for i in `seq 1 10`;do systemctl is-active network.target && break ;sleep 10;done
-#
-#- name: Remove local archive
-#  file: path={{ local_archive_dir }}/{{ container_name }}.tar.gz state=absent
-#  delegate_to: 127.0.0.1
   

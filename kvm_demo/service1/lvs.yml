@@ -1,11 +1,11 @@
-- hosts: lvs01
+- hosts: lvshost
   gather_facts: False
   remote_user: root
   vars_files:
     - vars/common.yml
     - vars/config.yml
   vars:
-    pcon: "{{ lvs.lvs1 }}"
+    pcon: "{{ lvs[service1] }}"
 
   pre_tasks:
     - name: stat container
@@ -14,7 +14,6 @@
       failed_when: lxc_info.rc not in [0,1]
       changed_when: lxc_info.rc == 1
   roles:
-#    - { role: ../lvs-web-dr/roles/create, when: "lxc_info.rc == 1", delegate_to: "{{ lxchost.manager_host }}", site: "{{ pcon }}" }
     - { role: ../lvs-web-dr/roles/deploy, when: "lxc_info.rc == 1", site: "{{ pcon }}" }
     - { role: ../lvs-web-dr/roles/lvs_post, site: "{{ pcon }}" }
 
@@ -23,31 +22,4 @@
       lxc_container:
         name: "{{ pcon.container_name }}"
         state: started
-        
-- hosts: lvs02
-  gather_facts: False
-  remote_user: root
-  vars_files:
-    - vars/common.yml
-    - vars/config.yml
-  vars:
-    pcon: "{{ lvs.lvs2 }}"
-
-  pre_tasks:
-    - name: stat container
-      shell: lxc-info -n {{ pcon.container_name }}
-      register: lxc_info
-      failed_when: lxc_info.rc not in [0,1]
-      changed_when: lxc_info.rc == 1
-  roles:
- #   - { role: ../lvs-web-dr/roles/create, when: "lxc_info.rc == 1", delegate_to: "{{ lxchost.manager_host }}", site: "{{ pcon }}" }
-    - { role: ../lvs-web-dr/roles/deploy, when: "lxc_info.rc == 1", site: "{{ pcon }}" }
-    - { role: ../lvs-web-dr/roles/lvs_post, site: "{{ pcon }}" }
-#    - { role: ../lvs-web-dr/roles/start, site: "{{ pcon }}" }
-  post_tasks:
-    - name: start container
-      lxc_container:
-        name: "{{ pcon.container_name }}"
-        state: started
-
 

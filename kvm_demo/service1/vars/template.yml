@@ -35,11 +35,9 @@ lvs_lxcconfig:
   template_dir: 'template/lvslxc'
   file:
     - { path: 'config', mode: '0644' }
-    - { path: 'config.mng', mode: '0644' }
     
 web_lxcconfig:
   template_dir: 'template/weblxc'
   file:
     - { path: 'config', mode: '0644' }
-    - { path: 'config.mng', mode: '0644' }
     
