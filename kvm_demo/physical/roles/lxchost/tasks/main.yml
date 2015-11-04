@@ -3,7 +3,9 @@
     - { name: '/etc/apt/sources.list', mode: '0644' }
     - { name: '/etc/apt/preferences', mode: '0644' }
 
-- apt: name={{ item }} state=present update_cache=yes
+- apt: update_cache=yes cache_valid_time=3600
+
+- apt: name={{ item }} state=present 
   with_items:
     - lxc=1:1.0.7-10 
     - lxc-dev

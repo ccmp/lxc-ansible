@@ -1,0 +1,36 @@
+#!/bin/bash
+
+apt-get install python git gcc python-setuptools python-dev -y
+
+easy_install pip 
+pip install ansible 
+
+cat /dev/null >  ~/.ssh/known_hosts
+ssh-keyscan  github.com >> ~/.ssh/known_hosts
+
+cd ~/
+if [ ! -d lxc-ansible ]; then
+	git clone git@github.com:ccmp/lxc-ansible.git
+fi
+
+cd lxc-ansible/
+git checkout kttest00
+git pull
+cd kvm_demo/
+
+for hst in mng01 gw1 lvs01 lvs02 web01 web02 ; do
+	ssh-keyscan  $hst >> ~/.ssh/known_hosts
+	ssh $hst apt-get install -y python > /dev/null &
+done
+
+wait
+
+echo "Physical Playbook"
+time ansible-playbook -i inventory/development physical/site.yml
+echo "Image Playbook"
+time ansible-playbook -i inventory/development image/site.yml
+echo "Config Playbook"
+time ansible-playbook -i inventory/development service1/site_config.yml
+echo "Deploy Playbook"
+time ansible-playbook -i inventory/development service1/site.yml
+
