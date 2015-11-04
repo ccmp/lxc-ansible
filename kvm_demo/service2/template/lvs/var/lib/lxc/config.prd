@@ -14,9 +14,9 @@ lxc.utsname = {{ hostname }}
 lxc.network.type = veth
 lxc.network.flags = up
 lxc.network.link = lbr1
-#lxc.network.ipv4 ={{ site.global_ip }}
+lxc.network.ipv4 ={{ LVS_GLOBAL_IP }}
 #
 lxc.network.type = veth
 lxc.network.flags = up
 lxc.network.link = lbr{{ service.vlanid }}
-#lxc.network.ipv4 = {{ site.local_ip }}
+lxc.network.ipv4 = {{ LVS_LOCAL_IP }}

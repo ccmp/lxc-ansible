@@ -1,0 +1,13 @@
+- hosts: cluster
+  gather_facts: False
+  remote_user: root
+  vars_files:
+    - vars/common.yml
+    - vars/config.yml
+  vars:
+    pcon: "{{ container[contents[service.name]] }}"
+
+  roles:
+    - { role: ../lvs-web-dr/roles/common_post, site: "{{ pcon }}" }
+
+

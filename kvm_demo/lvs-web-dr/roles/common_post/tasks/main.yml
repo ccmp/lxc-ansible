@@ -1,0 +1,34 @@
+- name: Stat container directory
+  stat: path={{ container_dir }}
+  register: rc
+  failed_when: rc.stat.isdir == ' false '
+
+- name: Create lxc config for this host. 
+  template: >
+    src={{ personal_conf_dir }}/config
+    dest={{ container_dir }}/config
+    mode='0644'
+  notify:
+    - restart container
+    
+- name: Copy hostname file
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+  with_items:
+  - { name: '/etc/hostname', mode: '0644', owner: 'root', group: 'root' }
+
+- name: Copy network interfaces file
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+  with_items:
+  - { name: '/etc/network/interfaces', mode: '0644', owner: 'root', group: 'root' }
+  notify:
+    - restart network  
