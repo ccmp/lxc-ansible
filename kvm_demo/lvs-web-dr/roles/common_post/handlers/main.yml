@@ -1,0 +1,6 @@
+- name: restart network
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      systemctl restart network

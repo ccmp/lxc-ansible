@@ -1,5 +1,6 @@
-service1: web2
-    
+contents:
+  service1: web2
+  service2: web2
       
       
       

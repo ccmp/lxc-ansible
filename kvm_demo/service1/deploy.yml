@@ -1,0 +1,17 @@
+- hosts: cluster
+  gather_facts: False
+  remote_user: root
+  vars_files:
+    - vars/common.yml
+    - vars/config.yml
+  vars:
+    pcon: "{{ container[contents[service.name]] }}"
+
+  pre_tasks:
+    - name: stat container
+      shell: lxc-info -n {{ pcon.container_name }}
+      register: lxc_info
+      failed_when: lxc_info.rc not in [0,1]
+      changed_when: lxc_info.rc == 1
+  roles:
+    - { role: ../lvs-web-dr/roles/deploy, when: "lxc_info.rc == 1", site: "{{ pcon }}" }

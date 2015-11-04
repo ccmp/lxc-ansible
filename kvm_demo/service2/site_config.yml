@@ -1,0 +1,3 @@
+---
+- include: lvs_config.yml
+- include: web_config.yml
