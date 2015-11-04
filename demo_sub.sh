@@ -1,5 +1,7 @@
 #!/bin/bash
 
+START=$(date)
+
 apt-get install python git gcc python-setuptools python-dev -y
 
 easy_install pip 
@@ -37,5 +39,6 @@ echo
 echo "Deploy Playbook"
 time ansible-playbook -i inventory/development service1/site.yml
 
-date
+echo START=$START
+echo END=$(date)
 
