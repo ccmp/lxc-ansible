@@ -1,11 +1,11 @@
-- hosts: cluster
+- hosts: service2-all
   gather_facts: False
   remote_user: root
   vars_files:
     - vars/common.yml
     - vars/config.yml
   vars:
-    pcon: "{{ container[contents[service.name]] }}"
+    pcon: "{{ container[contents['service2']] }}"
 
   pre_tasks:
     - name: stat container

@@ -1,3 +1,4 @@
+#auto lo eth0 
 auto lo eth0 eth1
 
 iface lo inet loopback
@@ -5,4 +6,4 @@ iface lo inet loopback
 iface eth0 inet static
   address {{ site.local_ip }}
 
-iface eth1 inet static
+#iface eth1 inet static
