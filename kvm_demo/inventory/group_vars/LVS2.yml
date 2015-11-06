@@ -1,5 +1,6 @@
-service1: lvs2
-    
+contents:
+  service1: lvs2
+  service2: lvs2
       
       
       

@@ -8,7 +8,6 @@ lvscommon:
   port: 80
   ip: "{{ vrrp.local_vip }}"
   
-  
 #Web(real server)
 realserver:
   subnet: 24
@@ -20,7 +19,7 @@ realserver:
     port: 80
     
 #Lvs
-lvs:
+container:
   lvs1:
     base_container: lvs-v1-0
     container_name: lvs1-s1
@@ -33,7 +32,7 @@ lvs:
     global_ip: 10.10.1.12/24
     local_ip: 192.168.10.12/24
 #Web
-web:
+#web:
   web1:
     base_container: web-v1-0
     container_name: web1-s1

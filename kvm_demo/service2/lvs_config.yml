@@ -1,0 +1,16 @@
+- hosts: service2-lvs
+  connection: local
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars/common.yml
+    - vars/config.yml
+    - vars/template.yml
+  vars:
+    pcon: "{{ container[contents['service2']] }}"
+
+  roles:
+    - role: ../lvs-web-dr/roles/config
+      site: "{{ pcon }}"
+      conf: "{{ lvs_config }}"
+      lxcconf: "{{ lvs_lxcconfig }}"

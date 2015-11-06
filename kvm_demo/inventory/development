@@ -29,3 +29,27 @@ webhost
 
 [manager:children]
 MANAGER
+
+[service1-all:children]
+LVS1
+LVS2
+WEB1
+WEB2
+[service1-lvs:children]
+LVS1
+LVS2
+[service1-web:children]
+WEB1
+WEB2
+
+[service2-all:children]
+LVS1
+LVS2
+WEB1
+WEB2
+[service2-lvs:children]
+LVS1
+LVS2
+[service2-web:children]
+WEB1
+WEB2
