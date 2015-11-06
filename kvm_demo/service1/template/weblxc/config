@@ -18,7 +18,7 @@ lxc.network.flags = up
 #lxc.network.hwaddr = 00:16:3e:xx:xx:xx
 #lxc.network.ipv4 = {{ site.local_ip }}
 #
-lxc.network.type = veth
-lxc.network.link = lbr1
-lxc.network.flags = up
+#lxc.network.type = veth
+#lxc.network.link = lbr1
+#lxc.network.flags = up
 #

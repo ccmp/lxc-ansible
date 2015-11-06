@@ -9,7 +9,7 @@ VIP={{ lvscommon.vip }}
 ${IPTABLES} -t mangle -A PREROUTING -d ${VIP} -j MARK --set-mark 1
 ${IPTABLES} -t mangle -A POSTROUTING -d ${VIP} -j TOS --set-tos 2 
 # Forward
-${IPTABLES} -A FORWARD -p tcp --sport 80 -s ${VIP} -j NFLOG --nflog-prefix "Bad return packet"
+#${IPTABLES} -A FORWARD -p tcp --sport 80 -s ${VIP} -j NFLOG --nflog-prefix "Bad return packet"
 
 #Routing
 ${IP} rule add table 100 fwmark 1 prio 100

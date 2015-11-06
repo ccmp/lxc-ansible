@@ -4,3 +4,7 @@
     state: started
     container_command: |
       systemctl restart network
+
+- name: restart container
+  debug: > 
+    msg="NOTIFY:{{ container_name }} config chenged.Please restart to enable the setting."

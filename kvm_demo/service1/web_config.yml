@@ -1,4 +1,4 @@
-- hosts: webhost
+- hosts: service1-web
   connection: local
   gather_facts: False
   remote_user: root
@@ -7,15 +7,10 @@
     - vars/config.yml
     - vars/template.yml
   vars:
-    pcon: "{{ container[contents[service.name]] }}"
+    pcon: "{{ container[contents['service1']] }}"
 
   roles:
     - role: ../lvs-web-dr/roles/config
       site: "{{ pcon }}"
       conf: "{{ web_config }}"
       lxcconf: "{{ web_lxcconfig }}"
-#    - role: ../lvs-web-dr/roles/config
-#      site: "{{ web.web2 }}"
-#      conf: "{{ web_config }}"
-#      lxcconf: "{{ web_lxcconfig }}"
-

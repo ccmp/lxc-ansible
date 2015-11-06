@@ -1,4 +1,4 @@
-- hosts: lvshost
+- hosts: service1-lvs
   connection: local
   gather_facts: False
   remote_user: root
@@ -7,15 +7,10 @@
     - vars/config.yml
     - vars/template.yml
   vars:
-    pcon: "{{ container[contents[service.name]] }}"
+    pcon: "{{ container[contents['service1']] }}"
 
   roles:
     - role: ../lvs-web-dr/roles/config
       site: "{{ pcon }}"
       conf: "{{ lvs_config }}"
       lxcconf: "{{ lvs_lxcconfig }}"
-#    - role: ../lvs-web-dr/roles/config
-#      site: "{{ lvs.lvs2 }}"
-#      conf: "{{ lvs_config }}"
-#      lxcconf: "{{ lvs_lxcconfig }}"
-
