@@ -2,13 +2,13 @@ local_archive_dir: /tmp
 config_dir: config
 
 common:
-  global_network: 10.10.1.0
+  global_network: 10.10.10.0
   global_subnet: 24
   local_network: 192.168.10.0
   local_subnet: 24
 
 gateway:
-  ip: 10.10.1.1
+  ip: 10.10.10.254
   mac: "52:54:00:11:00:02"
   
 service:

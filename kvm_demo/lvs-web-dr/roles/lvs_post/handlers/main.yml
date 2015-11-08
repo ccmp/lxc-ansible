@@ -1,3 +1,10 @@
+- name: restart network
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      systemctl restart networking
+
 - name: restart keepalived
   lxc_container:
     name: "{{ container_name }}"
@@ -15,3 +22,4 @@
 - name: restart container
   debug: > 
     msg="NOTIFY:{{ container_name }} config chenged.Please restart to enable the setting."
+
