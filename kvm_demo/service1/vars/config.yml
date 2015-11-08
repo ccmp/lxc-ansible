@@ -1,10 +1,10 @@
 vrrp:
-  global_vip: 10.10.1.10
+  global_vip: 10.10.10.10
   local_vip: 192.168.10.10
   auth_password: password
 
 lvscommon:
-  vip: 10.10.1.110
+  vip: 10.10.100.1
   port: 80
   ip: "{{ vrrp.local_vip }}"
   
@@ -23,13 +23,13 @@ container:
   lvs1:
     base_container: lvs-v1-0
     container_name: lvs1-s1
-    global_ip: 10.10.1.11/24
+    global_ip: 10.10.10.11/24
     local_ip: 192.168.10.11/24
   lvs2:
     base_container: lvs-v1-0
     container_name: lvs2-s1
     hostname: lvs2-s1
-    global_ip: 10.10.1.12/24
+    global_ip: 10.10.10.12/24
     local_ip: 192.168.10.12/24
 #Web
 #web:

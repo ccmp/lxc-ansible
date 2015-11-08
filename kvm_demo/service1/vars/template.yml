@@ -23,6 +23,7 @@ lvs_config:
     - { path: '/etc/keepalived/keepalived.conf', mode: '0644' }
     - { path: '/work/lvs-setup.sh', mode: '0755' }
     - { path: '/etc/systemd/system/lvs-setup.service', mode: '0644' }
+    - { path: '/etc/network/if-up.d/iptables', mode: '0755' }
     
 web_config:
   template_dir: 'template/web'
@@ -42,4 +43,4 @@ web_lxcconfig:
   template_dir: 'template/weblxc'
   file:
     - { path: 'config', mode: '0644' }
-    
+

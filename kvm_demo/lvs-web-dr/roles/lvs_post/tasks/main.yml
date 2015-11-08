@@ -56,3 +56,7 @@
     src='../lvs-setup.service'
     state=link
   
+- copy: src={{ personal_conf_dir }}/rootfs/{{ item.name }} dest={{ container_dir }}/rootfs/{{ item.name }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}
+  with_items:
+    - { name: '/etc/network/if-up.d/iptables', mode: '0755', owner: 'root', group: 'root' }
+

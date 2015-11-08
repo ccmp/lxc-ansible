@@ -1,0 +1,8 @@
+#!/bin/bash
+
+LOCAL_NET={{ common.local_network }}/{{ common.local_subnet }}
+
+if ! iptables -t nat -C POSTROUTING -o eth0 --src ${LOCAL_NET} -j MASQUERADE ; then
+        iptables -t nat -A POSTROUTING -o eth0 --src ${LOCAL_NET} -j MASQUERADE
+fi
+
