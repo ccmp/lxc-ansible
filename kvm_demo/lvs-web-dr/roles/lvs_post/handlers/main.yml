@@ -3,7 +3,7 @@
     name: "{{ container_name }}"
     state: started
     container_command: |
-      systemctl restart network
+      systemctl restart networking
 
 - name: restart keepalived
   lxc_container:
