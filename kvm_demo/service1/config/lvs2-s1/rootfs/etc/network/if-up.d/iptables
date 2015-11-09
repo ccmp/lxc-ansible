@@ -1,8 +1,0 @@
-#!/bin/bash
-
-LOCAL_NET=192.168.10.0/24
-
-if ! iptables -t nat -C POSTROUTING -o eth0 --src ${LOCAL_NET} -j MASQUERADE ; then
-        iptables -t nat -A POSTROUTING -o eth0 --src ${LOCAL_NET} -j MASQUERADE
-fi
-
