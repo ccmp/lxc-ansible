@@ -24,7 +24,7 @@ if [ ! -d lxc-ansible ]; then
 fi
 
 cd lxc-ansible/
-git checkout kttest00
+git checkout develop
 git pull
 cd kvm_demo/
 
