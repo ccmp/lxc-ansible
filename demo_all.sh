@@ -5,7 +5,7 @@ SCRIPT="./demo_sub.sh"
 
 apt-get install -y screen 
 
-cat<<EOF>$SCRIPT
+cat<<\EOF>$SCRIPT
 #!/bin/bash
 
 START=$(date)
