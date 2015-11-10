@@ -1,0 +1,10 @@
+mnghost:
+  bridge:
+    - name: &brdif "lbr01"
+      iface: "eth0"
+      ip: &brdip "192.168.10.254"
+      mask: "255.255.255.0"
+  lxc_default:
+    iface: *brdif
+    ip: "192.168.10.101/24" # address/mask(8,16,...)
+    gateway: *brdip

@@ -1,0 +1,35 @@
+- name: Remove previous container dir
+  file: path={{ base_container_dir }} state=absent
+
+- file: path={{ repo_dir }} state=directory 
+
+- lxc_container: 
+    name: '{{ base_container_name }}'
+    container_log: true
+    template: debian
+    template_options: --arch amd64 --release jessie
+    state: stopped
+    container_command: |
+      echo "root:password" | chpasswd
+      apt-get update
+      apt-get -y upgrade
+      apt-get -y install iputils-ping strace vim-tiny tcpdump telnet 
+      apt-get clean
+  environment:
+    MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
+    SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
+
+- file: path={{ base_container_dir }}/rootfs/{{ item.name }} mode={{ item.mode }} state=directory
+  with_items:
+    - { name: '/root/.ssh/', mode: '0700' }
+
+- template: src=../files/{{ item.name }} dest={{ base_container_dir }}/rootfs/{{ item.name }} mode={{ item.mode }}
+  with_items:
+    - { name: '/root/.ssh/authorized_keys', mode: '0644' }
+
+- shell: tar c config rootfs fstab | gzip > {{ repo_dir }}/{{ base_container_name }}.tar.gz
+  args:
+    chdir: '{{ base_container_dir }}'
+
+- shell: dpkg-query -W -f='${binary:Package}\t\t\t${Version}\n' --admindir={{ base_container_dir }}/rootfs/var/lib/dpkg/ > {{ repo_dir }}/.pkgs.{{ base_container_name }}
+

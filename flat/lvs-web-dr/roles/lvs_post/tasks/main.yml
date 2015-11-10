@@ -1,0 +1,64 @@
+- name: Stat container directory
+  stat: path={{ container_dir }}
+  register: rc
+  failed_when: rc.stat.isdir == ' false '
+
+- name: Create lxc config for this host. 
+  template: >
+    src={{ personal_conf_dir }}/config
+    dest={{ container_dir }}/config
+    mode='0644'
+  notify:
+    - restart container
+    
+- name: Copy hostname file
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+  with_items:
+  - { name: '/etc/hostname', mode: '0644', owner: 'root', group: 'root' }
+      
+- name: Copy Keepalived config
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+  with_items:
+    - { name: '/etc/keepalived/keepalived.conf', mode: '0644', owner: 'root', group: 'root' }
+  notify:
+    - restart keepalived
+    
+- name: Create Directory for lvs-setup
+  file: state=directory path={{ container_dir }}/rootfs/work
+  
+- name: Copy LVS Setup files
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }} 
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+
+  with_items:
+    - { name: '/work/lvs-setup.sh', mode: '0755', owner: 'root', group: 'root' }
+    - { name: '/etc/systemd/system/lvs-setup.service', mode: '0644', owner: 'root', group: 'root' }
+  notify:
+    - restart lvs-setup
+
+- name: Enable lvs-setup.service
+  file: >
+    path='{{ container_dir }}/rootfs/etc/systemd/system/multi-user.target.wants/lvs-setup.service'
+    src='../lvs-setup.service'
+    state=link
+  
+- copy: src={{ personal_conf_dir }}/rootfs/{{ item.name }} dest={{ container_dir }}/rootfs/{{ item.name }} owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}
+  with_items:
+    - { name: '/etc/network/if-up.d/iptables', mode: '0755', owner: 'root', group: 'root' }
+  notify:
+    - restart network
+

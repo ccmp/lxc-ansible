@@ -1,0 +1,4 @@
+- name: Load ip_tables modules on host
+  modprobe: name=ip_tables state=present
+  
+  

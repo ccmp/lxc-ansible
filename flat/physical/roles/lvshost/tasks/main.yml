@@ -1,0 +1,14 @@
+- name: Load ip_vs modules on host
+  modprobe: name=ip_vs state=present
+  
+- name: Load ip_tables modules on host
+  modprobe: name=ip_tables state=present
+  
+- name: port forward enable
+  sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes  
+
+- copy: src=../files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+  with_items:
+    - { name: '/etc/network/if-up.d/iptables', mode: '0755' }
+  notify: restart network
+

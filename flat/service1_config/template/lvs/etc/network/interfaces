@@ -1,0 +1,11 @@
+auto lo eth0 eth1
+
+iface lo inet loopback
+
+iface eth0 inet static
+  address {{ site.global_ip }}
+  gateway {{ gateway.ip }}
+
+iface eth1 inet static
+  address {{ site.local_ip }}
+

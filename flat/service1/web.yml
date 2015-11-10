@@ -1,0 +1,30 @@
+- hosts: service1-web
+  gather_facts: False
+  remote_user: root
+  vars_files:
+    - vars/config.yml
+  vars:
+    pcon: "{{ container[contents[service.name]] }}"
+    cname: "{{ contents[service.name] }}"
+  pre_tasks:
+    - name: stat container
+      shell: lxc-info -n {{ pcon.container_name }}
+      register: lxc_info
+      failed_when: lxc_info.rc not in [0,1]
+      changed_when: lxc_info.rc == 1
+  roles:
+    - { role: deploy, when: "lxc_info.rc == 1", site: "{{ pcon }}" }
+    - { role: common_post, site: "{{ pcon }}" }
+    - { role: web_post, site: "{{ pcon }}" }
+  tasks:
+   - include: "web1.yml"
+     when: cname == "web"
+   - include: "web2.yml"
+     when: cname == "web"
+    
+  post_tasks:
+    - name: start container
+      lxc_container:
+        name: "{{ pcon.container_name }}"
+        state: started
+
