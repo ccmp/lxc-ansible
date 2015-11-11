@@ -3,6 +3,7 @@
 #
 
 - hosts: manager
+  gather_facts: False
   remote_user: root
 
   vars:
