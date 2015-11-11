@@ -1,0 +1,29 @@
+- name: Create root directory
+  file: path={{ config_root }} state=directory
+    
+- name: Create configure file root directories
+  file: path={{ config_root }}/rootfs state=directory
+
+- name: Create diretory tree 
+  file: >
+    path={{ config_root }}/rootfs/{{ item.path | dirname }}
+    state=directory
+    recurse=yes   
+  with_items: conf.file
+  
+- name: Create configuration files from template.
+  template: > 
+    src={{ conf.template_dir }}/{{ item.src | default(item.path)  }}
+    dest={{ config_root }}/rootfs/{{ item.path }}
+    mode={{ item.mode | default(def_perm.fmode) }}
+  with_items: conf.file
+  when: item.copy | default(true)
+
+- name: Copy lxc-configuration files from template.
+  copy: > 
+    src={{ lxcconf.template_dir }}/{{ item.src | default(item.path)  }}
+    dest={{ config_root }}/{{ item.path }}
+    mode={{ item.mode | default(def_perm.fmode) }}
+  with_items: lxcconf.file
+  when: item.copy | default(true)
+

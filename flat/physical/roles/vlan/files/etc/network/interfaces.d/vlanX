@@ -1,0 +1,12 @@
+# vlan id {{ item.id }}
+auto {{ item.iface }}.{{ item.id }} lbr{{ item.id }}
+
+iface {{ item.iface }}.{{ item.id }} inet manual
+      vlan-raw-device {{ item.iface }}
+
+iface lbr{{ item.id }} inet static
+      bridge_ports {{ item.iface }}.{{ item.id }}
+      bridge_wait 0      
+      address 10.10.{{ item.id }}.254
+      netmask 255.255.255.0
+

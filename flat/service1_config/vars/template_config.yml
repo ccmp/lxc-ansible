@@ -1,0 +1,64 @@
+local_archive_dir: /tmp
+config_dir: ../service1/config
+
+common:
+  global_network: 10.10.10.0
+  global_subnet: 24
+  local_network: 192.168.10.0
+  local_subnet: 24
+
+gateway:
+  ip: 10.10.10.254
+  mac: "52:54:00:11:00:02"
+  
+service:
+  name: service1
+  vlanid: 10
+  
+vrrp:
+  global_vip: 10.10.10.10
+  local_vip: 192.168.10.10
+  auth_password: password
+
+lvscommon:
+  vip: 10.10.100.1
+  port: 80
+  ip: "{{ vrrp.local_vip }}"
+  
+#Web(real server)
+realserver:
+  subnet: 24
+  server1:
+    ip: 192.168.10.51
+    port: 80
+  server2:
+    ip: 192.168.10.52
+    port: 80
+    
+#Lvs
+container:
+  lvs1:
+    base_container: lvs-v1-0
+    container_name: lvs1-s1
+    global_ip: 10.10.10.11/24
+    local_ip: 192.168.10.11/24
+  lvs2:
+    base_container: lvs-v1-0
+    container_name: lvs2-s1
+    hostname: lvs2-s1
+    global_ip: 10.10.10.12/24
+    local_ip: 192.168.10.12/24
+#Web
+#web:
+  web1:
+    base_container: web-v1-0
+    container_name: web1-s1
+    hostname: web1
+    local_ip: "{{ realserver.server1.ip }}/{{ realserver.subnet }}"
+    local_port: "{{ realserver.server1.port }}"
+  web2:
+    base_container: web-v1-0
+    container_name: web2-s1
+    hostname: web2
+    local_ip: "{{ realserver.server2.ip }}/{{ realserver.subnet }}"
+    local_port: "{{ realserver.server2.port }}"

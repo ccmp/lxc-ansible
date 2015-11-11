@@ -1,0 +1,5 @@
+- hosts: lxchost
+  remote_user: root
+  gather_facts: False
+  roles:
+    - lxchost    

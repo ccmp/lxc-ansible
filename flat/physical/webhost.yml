@@ -1,0 +1,7 @@
+- hosts: webhost 
+  remote_user: root
+  gather_facts: False
+  roles:
+    - vlan 
+    - webhost  
+    
