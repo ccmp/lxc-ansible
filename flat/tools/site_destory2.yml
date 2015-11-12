@@ -1,0 +1,10 @@
+- hosts: "{{ service_name }}-all"
+  gather_facts: False
+  remote_user: root
+  vars_files:
+    - ../{{ service_name }}/config/config.yml
+  vars:
+    pcon: "{{ container[contents[service_name]] }}"
+
+  roles:
+    - { role: destroy , site: "{{ pcon }}"  }

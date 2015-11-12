@@ -1,0 +1,7 @@
+---
+- include: pre_config.yml
+- include: lvs1.yml
+- include: lvs2.yml
+- include: web1.yml
+- include: web2.yml
+

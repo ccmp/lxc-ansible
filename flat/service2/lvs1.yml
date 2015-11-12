@@ -1,13 +1,13 @@
 ---
-- hosts: LVS1
+- hosts: service2-lvs1
   gather_facts: False
   remote_user: root
 
   vars_files:
-    - vars/config.yml
+    - config/config.yml
   vars:
     site: "{{ container.lvs1 }}"
-#    container_name: "{{ site.container_name }}"
+    container_name: "{{ site.container_name }}"
 #    hostname: "{{ site.hostname | default(site.container_name) }}"
 #    personal_conf_dir: "{{ config_dir }}/{{ container_name }}"    
 
