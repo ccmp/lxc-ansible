@@ -47,9 +47,12 @@ LVS1
 LVS2
 WEB1
 WEB2
-[service2-lvs:children]
+
+[service2-lvs1:children]
 LVS1
+[service2-lvs2:children]
 LVS2
-[service2-web:children]
+[service2-web1:children]
 WEB1
+[service2-web2:children]
 WEB2

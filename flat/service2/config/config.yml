@@ -1,0 +1,23 @@
+config_dir: config
+
+service:
+  name: service2
+  vlanid: 20
+  
+container:
+#Lvs
+  lvs1:
+    base_container: lvs-v1-0
+    container_name: lvs1-s2
+  lvs2:
+    base_container: lvs-v1-0
+    container_name: lvs2-s2
+#Web
+  web1:
+    base_container: web-v1-0
+    container_name: web1-s2
+    hostname: web1
+  web2:
+    base_container: web-v1-0
+    container_name: web2-s2
+    hostname: web2

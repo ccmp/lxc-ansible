@@ -12,5 +12,5 @@ ip route add 10.10.100.2 via 10.10.20.10 dev eth0.1
 echo 1 > /proc/sys/net/ipv4/ip_forward
 
 # Plz set routing at cliant as below.
-# ip add route 10.10.1.0/24 via <GATEWAY ADDRESS>
+# ip add route 10.10.100.0/24 via <GATEWAY ADDRESS>
 

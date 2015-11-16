@@ -3,11 +3,11 @@
 #
 
 - hosts: manager
+  gather_facts: False
   remote_user: root
 
   vars:
     repo_dir: "{{ manager.repo_dir }}"
-    lxc_dir: "{{ lxchost.lxc_dir }}"
 
     base_container_name: base-v1-0
     middle_container_name: web-v1-0 
