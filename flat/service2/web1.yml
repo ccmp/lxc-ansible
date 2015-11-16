@@ -27,7 +27,16 @@
 # container's specific processing.
   tasks:
     - debug: msg="describe container's specific tasks here"
-# - task1
+    - copy: >
+        src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+        dest={{ container_dir }}/rootfs/{{ item.name }}
+        mode={{ item.mode }}
+        owner={{ item.owner }}
+        group={{ item.group }}
+      with_items:
+        - { name: '/etc/apache2/mods-available/status.conf', mode: '0644', owner: 'root', group: 'root' }
+      notify:
+        - reload apache2
 # - task2
 # ...
 
@@ -38,5 +47,13 @@
     - lxc_container:
         name: "{{ container_name }}"
         state: started
-
+#
+  handlers:
+    - name: reload apache2
+      lxc_container:
+        name: "{{ container_name }}"
+        state: started
+        container_command: |
+          systemctl reload apache2
+        
 
