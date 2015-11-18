@@ -29,7 +29,7 @@
 # ansible-playbook -i inventory/development /service1_config/site.yml
 ```
 ### 注意点
-* var以下の設定ファイルがservice1_configとservice2_configで設定ファイ名、一部変数名などが異なっているので注意。
+* var以下の設定ファイルがservice1_configとservice2_configで設定ファイル名、設定の変数名などが異なっているので注意。
 * service2_configのほうが新しい変数名になっている。
 ## roleについて
 * deploy : デプロイ処理
@@ -41,7 +41,7 @@
 ## serviceについて
 * service1とservice2でPlaybookの構成や処理の手順がことなっている。
 * var以下にある設定ファイルのファイル名や設定の変数名などもことなっている。
- * service2のほうがリファインされたもの。
+ * service2のほうが新しく作り直されたもの。
 
 ## service1
 * 役割コンテナごとにinventoryのグループを作成してそれを基準にPlaybookを実行する。 
