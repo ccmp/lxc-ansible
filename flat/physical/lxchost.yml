@@ -1,5 +1,8 @@
 - hosts: lxchost
   remote_user: root
   gather_facts: False
+  vars:
+    tmpdir: /tmp
+    lxcpackage: lxc_1.0.8_amd64.deb
   roles:
     - lxchost    

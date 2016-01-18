@@ -1,3 +1,6 @@
+#
+# --- Logical host and Physical host binding.
+#
 [LVS1]
 lvs01
 [LVS2]
@@ -8,9 +11,9 @@ web01
 web02
 [MANAGER]
 mng01
-
 #
-
+# --- Host's role and Logical host binding.
+#
 [mnghost:children]
 MANAGER
 
@@ -27,27 +30,57 @@ mnghost
 lvshost
 webhost
 
+[allhost:children]
+LVS1
+LVS2
+WEB1
+WEB2
+MANAGER
+
 [manager:children]
 MANAGER
 
+# --- Service1 ---
+# --- Serivice1 host and Logical host binding.
+#
+[service1-lvs1:children]
+LVS1
+[service1-lvs2:children]
+LVS2
+[service1-web1:children]
+WEB1
+[service1-web2:children]
+WEB2
+#
+# ---- Service1 cluster setting
+# 
 [service1-all:children]
-LVS1
-LVS2
-WEB1
-WEB2
+service1-lvs1
+service1-lvs2
+service1-web1
+service1-web2
+#
 [service1-lvs:children]
-LVS1
-LVS2
+service1-lvs1 
+service1-lvs2 
 [service1-web:children]
-WEB1
-WEB2
+service1-web1 
+service1-web2 
+#
+# Variables
+#
+[service1-lvs1:vars]
+cname=lvs1
+[service1-lvs2:vars]
+cname=lvs2
+[service1-web1:vars]
+cname=web1
+[service1-web2:vars]
+cname=web2
 
-[service2-all:children]
-LVS1
-LVS2
-WEB1
-WEB2
-
+# --- Service2 ---
+# --- Service2 host and Logical host binding.
+#
 [service2-lvs1:children]
 LVS1
 [service2-lvs2:children]
@@ -56,3 +89,22 @@ LVS2
 WEB1
 [service2-web2:children]
 WEB2
+#
+# ---- Service2 cluster setting
+#
+[service2-all:children]
+service2-lvs1
+service2-lvs2
+service2-web1
+service2-web2
+#
+# Variables
+#
+[service2-lvs1:vars]
+cname=lvs1
+[service2-lvs2:vars]
+cname=lvs2
+[service2-web1:vars]
+cname=web1
+[service2-web2:vars]
+cname=web2

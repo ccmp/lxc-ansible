@@ -1,3 +1,6 @@
 ---
-- include: lvs_config.yml
-- include: web_config.yml
+- include: pre_config.yml
+- include: lvs.yml
+- include: web.yml
+
+

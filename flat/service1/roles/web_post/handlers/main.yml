@@ -4,6 +4,6 @@
     state: started
     container_command: |
       systemctl restart web-setup
-
+  when: lxc_info.stdout.find('RUNNING') != -1
       
   

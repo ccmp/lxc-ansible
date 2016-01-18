@@ -2,9 +2,9 @@
   gather_facts: False
   remote_user: root
   vars_files:
-    - ../{{ service_name }}/vars/config.yml
+    - ../{{ service_name }}/config/config.yml
   vars:
-    pcon: "{{ container[contents[service_name]] }}"
+    pcon: "{{ container[cname] }}"
 
   roles:
     - { role: destroy , site: "{{ pcon }}"  }

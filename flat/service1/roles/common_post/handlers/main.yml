@@ -4,6 +4,7 @@
     state: started
     container_command: |
       systemctl restart network
+  when: lxc_info.stdout.find('RUNNING') != -1
 
 - name: restart container
   debug: > 

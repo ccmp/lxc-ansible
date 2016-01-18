@@ -10,8 +10,8 @@
     src={{ personal_conf_dir }}/config
     dest={{ container_dir }}/config
     mode='0644'
-  notify:
-    - restart container
+#  notify:
+#    - restart container
     
 - name: Copy hostname file
   copy: >
@@ -33,7 +33,16 @@
   with_items:
     - { name: '/etc/keepalived/keepalived.conf', mode: '0644', owner: 'root', group: 'root' }
   notify:
-    - restart keepalived
+    - restart keepalived    
+#  register: keepalived_rc
+
+#- debug: var=keepalived_rc.changed
+# - debug: var=lxc_info 
+#- name: Restart Keepalived
+#  debug: msg="Restart Keepalived"
+#  when: keepalived_rc.changed and ( lxc_info.stdout.find('RUNNING') != -1) 
+#  notify:
+#    - restart keepalived
     
 - name: Create Directory for lvs-setup
   file: state=directory path={{ container_dir }}/rootfs/work
@@ -50,8 +59,8 @@
     - { name: '/work/lvs-setup.sh', mode: '0755', owner: 'root', group: 'root' }
     - { name: '/etc/systemd/system/lvs-setup.service', mode: '0644', owner: 'root', group: 'root' }
   notify:
-    - restart lvs-setup
-
+   - restart lvs-setup
+  
 - name: Enable lvs-setup.service
   file: >
     path='{{ container_dir }}/rootfs/etc/systemd/system/multi-user.target.wants/lvs-setup.service'
@@ -63,4 +72,3 @@
     - { name: '/etc/network/if-up.d/iptables', mode: '0755', owner: 'root', group: 'root' }
   notify:
     - restart network
-

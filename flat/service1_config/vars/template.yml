@@ -16,31 +16,35 @@ def_perm:
   group: 'root'
    
 lvs_config:
-  template_dir: 'template/lvs'
-  file:
-    - { path: '/etc/hostname', mode: '0644' }
-    - { path: '/etc/network/interfaces', mode: '0644' }
-    - { path: '/etc/keepalived/keepalived.conf', mode: '0644' }
-    - { path: '/work/lvs-setup.sh', mode: '0755' }
-    - { path: '/etc/systemd/system/lvs-setup.service', mode: '0644' }
-    - { path: '/etc/network/if-up.d/iptables', mode: '0755' }
-    
+  template:
+    src_dir: 'template/lvs'
+    file:
+      - { path: '/etc/hostname', mode: '0644' }
+      - { path: '/etc/network/interfaces', mode: '0644' }
+      - { path: '/etc/keepalived/keepalived.conf', mode: '0644' }
+      - { path: '/work/lvs-setup.sh', mode: '0755' }
+      - { path: '/etc/systemd/system/lvs-setup.service', mode: '0644' }
+      - { path: '/etc/network/if-up.d/iptables', mode: '0755' }
+      
 web_config:
-  template_dir: 'template/web'
-  file:
-    - { path: '/etc/hostname', mode: '0644' }
-    - { path: '/etc/network/interfaces', mode: '0644' }
-    - { path: '/var/www/html/index.html', mode: '0644' }
-    - { path: '/work/web-setup.sh', mode: '0755' }
-    - { path: '/etc/systemd/system/web-setup.service', mode: '0644' }
+  template:
+    src_dir: 'template/web'
+    file:
+      - { path: '/etc/hostname', mode: '0644' }
+      - { path: '/etc/network/interfaces', mode: '0644' }
+      - { path: '/var/www/html/index.html', mode: '0644' }
+      - { path: '/work/web-setup.sh', mode: '0755' }
+      - { path: '/etc/systemd/system/web-setup.service', mode: '0644' }
     
 lvs_lxcconfig:
-  template_dir: 'template/lvslxc'
-  file:
-    - { path: 'config', mode: '0644' }
+  copyonly:
+    src_dir: 'template/lvslxc'
+    file:
+      - { path: 'config', mode: '0644' }
     
 web_lxcconfig:
-  template_dir: 'template/weblxc'
-  file:
-    - { path: 'config', mode: '0644' }
-
+  copyonly:
+    src_dir: 'template/weblxc'
+    file:
+      - { path: 'config', mode: '0644' }
+      

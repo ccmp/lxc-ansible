@@ -1,30 +1,38 @@
+---
 - hosts: service1-web
   gather_facts: False
   remote_user: root
+
   vars_files:
-    - vars/config.yml
+    - config/config.yml
   vars:
-    pcon: "{{ container[contents[service.name]] }}"
-    cname: "{{ contents[service.name] }}"
+    site: "{{ container[cname] }}"
+    container_name: "{{ site.container_name }}"
+    personal_conf_dir: "{{ config_dir }}/{{ container_name }}"
+    container_dir: "{{ lxc_dir }}/{{ container_name }}"
+
+# check whether the container have been deployed already.
   pre_tasks:
-    - name: stat container
-      shell: lxc-info -n {{ pcon.container_name }}
+    - shell: lxc-info -s -H -n {{ container_name }}
       register: lxc_info
       failed_when: lxc_info.rc not in [0,1]
       changed_when: lxc_info.rc == 1
+      
+# container's common processing.
   roles:
-    - { role: deploy, when: "lxc_info.rc == 1", site: "{{ pcon }}" }
-    - { role: common_post, site: "{{ pcon }}" }
-    - { role: web_post, site: "{{ pcon }}" }
-  tasks:
-   - include: "web1.yml"
-     when: cname == "web"
-   - include: "web2.yml"
-     when: cname == "web"
-    
+    - { role: deploy, when: "lxc_info.rc == 1" }
+    - { role: common_post}
+    - { role: web_post }
+# container's specific processing(if necessary).
+#   - { role: web1, when: "cname == 'web1'" }
+#   - { role: web2, when: "cname == 'web2'" }
+
+
+# To start container as long as it did not start so far.
   post_tasks:
-    - name: start container
-      lxc_container:
-        name: "{{ pcon.container_name }}"
+    - lxc_container:
+        name: "{{ container_name }}"
         state: started
+#
+        
 
