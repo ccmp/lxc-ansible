@@ -9,6 +9,8 @@ lvs02
 web01
 [WEB2]
 web02
+[WEB3]
+web03
 [MANAGER]
 mng01
 #
@@ -24,6 +26,7 @@ LVS2
 [webhost:children]
 WEB1
 WEB2
+WEB3
 
 [lxchost:children]
 mnghost
@@ -35,10 +38,18 @@ LVS1
 LVS2
 WEB1
 WEB2
+WEB3
 MANAGER
 
 [manager:children]
 MANAGER
+
+# --- build environment ---
+[phpbuild:children]
+MANAGER
+# Variables
+[phpbuild:vars]
+cname=php1
 
 # --- Service1 ---
 # --- Serivice1 host and Logical host binding.
@@ -51,6 +62,8 @@ LVS2
 WEB1
 [service1-web2:children]
 WEB2
+[service1-web3:children]
+WEB3
 #
 # ---- Service1 cluster setting
 # 
@@ -59,6 +72,7 @@ service1-lvs1
 service1-lvs2
 service1-web1
 service1-web2
+service1-web3
 #
 [service1-lvs:children]
 service1-lvs1 
@@ -66,6 +80,7 @@ service1-lvs2
 [service1-web:children]
 service1-web1 
 service1-web2 
+service1-web3
 #
 # Variables
 #
@@ -77,6 +92,8 @@ cname=lvs2
 cname=web1
 [service1-web2:vars]
 cname=web2
+[service1-web3:vars]
+cname=web3
 
 # --- Service2 ---
 # --- Service2 host and Logical host binding.
