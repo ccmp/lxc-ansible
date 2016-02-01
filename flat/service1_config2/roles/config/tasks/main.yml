@@ -1,0 +1,31 @@
+- name: Create root directory
+  file: path={{ config_root }} state=directory
+    
+#- name: Create configure file root directories
+#  file: path={{ config_root }}/rootfs state=directory
+
+- name: Create diretory tree 
+  file: >
+    path={{ config_root }}/{{ item.path | dirname }}
+    state=directory
+    recurse=yes   
+  with_items:
+    - "{{ conf.template.file }}"
+    - "{{ conf.copyonly.file }}"
+  when: item.path | default(false)
+
+- name: Create configuration files from template.
+  template: > 
+    src={{ conf.template.src_dir }}/{{ item.src | default(item.path)  }}
+    dest={{ config_root }}/{{ item.path }}
+    mode={{ item.mode | default(def_perm.fmode) }}
+  with_items: conf.template.file
+  when: item.path | default(false) and item.copy | default(true) 
+
+- name: Copy configuration file only. 
+  copy: > 
+    src={{ conf.copyonly.src_dir }}/{{ item.src | default(item.path)  }}
+    dest={{ config_root }}/{{ item.path }}
+    mode={{ item.mode | default(def_perm.fmode) }}
+  with_items: conf.copyonly.file
+  when: item.path | default(false) and item.copy | default(true) 

@@ -1,0 +1,28 @@
+- hosts: service1-lvs
+  connection: local
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars/config.yml
+    - vars/var_config.yml
+    - vars/template.yml
+
+  vars:
+    site: "{{ personal_config[cname] }}"
+    pcon: "{{ container[cname] }}"
+    container_name: "{{ pcon.container_name }}"
+    hostname: "{{ pcon.hostname | default(container_name) }}"
+
+  pre_tasks:
+    - name: Create config directory
+      file: path={{ config_dest }} state=directory
+
+  roles:
+    - role: config
+      config_root: "{{ config_dest }}/{{ container_name }}/rootfs"
+      conf: "{{ lvs_config }}"
+      
+    - role: config
+      config_root: "{{ config_dest }}/{{ container_name }}"
+      conf: "{{ lvs_lxcconfig }}"
+

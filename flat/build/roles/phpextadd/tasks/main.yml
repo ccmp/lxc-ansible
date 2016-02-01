@@ -1,0 +1,37 @@
+- stat: path={{ container_dir}}/rootfs/{{ phpprefix }}
+  register: rcprefix
+  failed_when: rcprefix.stat.isdir is not defined or not rcprefix.stat.isdir
+  
+- stat: path={{ container_dir }}/rootfs/{{ phpwork }}/php-{{ phpversion }}
+  register: rcsrc
+  failed_when: rcsrc.stat.isdir is not defined or not rcsrc.stat.isdir 
+ 
+- lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_log: true
+    container_command: |
+      echo "Check Extension"
+      if [[ -f {{ phpprefix }}/lib/php/extensions/no-debug-non-zts-20131226/{{ phpext }}.so ]] ;then
+      echo " PHP:{{ phpext }} is already installed"
+           exit 0
+      fi      
+      apt-get update
+      apt-get -y install {{ dev_pkgs | join(" ")}}
+      cd /{{ phpwork }}/php-{{ phpversion }}
+      cd ext/{{ phpext }}
+      {{ phpprefix }}/bin/phpize
+      ./configure --with-{{ phpext }} --with-php-config={{ phpprefix }}/bin/php-config
+      make 
+      make install
+
+- lineinfile: >-
+    dest={{ container_dir }}/rootfs/{{ phpprefix }}/lib/php.ini
+    state=present
+    line="extension_dir={{ phpprefix }}/lib/php/extensions/no-debug-non-zts-20131226"
+    
+- lineinfile: >-
+    dest={{ container_dir }}/rootfs/{{ phpprefix }}/lib/php.ini
+    state=present
+    line="extension = {{ phpext }}.so"
+    

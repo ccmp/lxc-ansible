@@ -1,0 +1,22 @@
+- hosts: manager
+  remote_user: root
+  gather_facts: False
+
+  vars_files:
+    - config/config.yml
+  vars:
+    lxcwork: /lxc_work
+    lxcversion: 1.0.8 
+
+  pre_tasks:
+    - stat: path={{ lxcwork }}/lxc_{{ lxcversion }}_amd64.deb
+      register: rcdpkg       
+  roles:
+    - { role: lxcbuild, when: not rcdpkg.stat.exists }
+
+  tasks:
+    - fetch: >
+        src="{{ lxcwork }}/lxc_{{ lxcversion }}_amd64.deb"
+        dest="files/"
+        flat=yes
+

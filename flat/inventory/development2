@@ -1,0 +1,84 @@
+#
+# Inventory file for service1
+#
+# --- Logical host and Physical host binding.
+#
+[LVS1]
+lvs01
+[LVS2]
+lvs02
+[WEB1]
+web01
+[WEB2]
+web02
+[WEB3]
+web03
+[MANAGER]
+mng01
+#
+[allhost:children]
+LVS1
+LVS2
+WEB1
+WEB2
+WEB3
+MANAGER
+
+[manager:children]
+MANAGER
+
+# --- Service1 ---
+# VLAN1 GLOBAL: 10.1.16.0/20
+#       LOCAL : 192.168.16.0/20
+#       GATEWAY: 192.168.16.1 
+#       LVS: 192.168.17.1 - 254
+#       WEB: 192.168.18.1 - 254
+# --- Serivice1 host and Logical host binding.
+#
+[service1-lvs1:children]
+LVS1
+[service1-lvs2:children]
+LVS2
+[service1-web1:children]
+WEB1
+[service1-web2:children]
+WEB2
+[service1-web3:children]
+WEB3
+#
+# ---- Service1 cluster setting
+# 
+[service1-all]
+service1-lvs1
+service1-lvs2
+service1-web1
+service1-web2
+service1-web3
+#
+[service1-lvs]
+service1-lvs1 
+service1_lvs2 
+[service1-web]
+service1-web1 
+service1-web2 
+service1-web3 
+#
+# Variables
+#
+[service1-lvs1:vars]
+cname=lvs1
+global_ip=10.1.17.1
+local_ip=192.168.17.1
+[service1-lvs2:vars]
+cname=lvs2
+global_ip=10.1.17.2
+local_ip=192.168.17.2
+[service1-web1:vars]
+cname=web1
+local_ip=192.168.18.1
+[service1-web2:vars]
+cname=web2
+local_ip=192.168.18.2
+[service1-web3:vars]
+cname=web3
+local_ip=192.168.18.3

@@ -1,0 +1,74 @@
+- file: state=directory path={{ container_dir}}/rootfs/{{ phpwork }}
+- file: state=directory path={{ container_dir}}/rootfs/{{ phpprefix }}
+  
+- stat: path={{ container_dir }}/rootfs/{{ phpwork }}/php-{{ phpversion }}.tar.bz2
+  register: rcsrc  
+- get_url: > 
+    url=http://us2.php.net/get/php-{{ phpversion }}.tar.bz2/from/jp2.php.net/mirror 
+    dest={{ container_dir }}/rootfs/{{ phpwork }}/php-{{ phpversion }}.tar.bz2
+  when: not rcsrc.stat.exists
+    
+- lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_log: true
+    container_command: |
+      echo "Check PHP"
+      if [[ -f {{ phpprefix }}/bin/php ]] ;then
+        PHPVER=$({{ phpprefix }}/bin/php -v | awk '/^PHP/{print $2}')
+        if [[ "${PHPVER}" == "{{ phpversion }}" ]] ;then
+           echo " PHP: ${PHPVER} is already installed"
+           exit 0
+        fi
+      fi
+      apt-get update
+      apt-get -y install {{ dev_pkgs | join(" ")}}      
+      [[ -d /usr/ccmp ]] || mkdir {{ phpprefix }}
+      cd /{{ phpwork }}
+      tar xfj php-{{ phpversion }}.tar.bz2
+      cd php-{{ phpversion }}
+      ./configure --prefix={{ phpprefix }} --with-apxs2=/usr/bin/apxs2
+      make 
+      make install
+      cp php.ini-development /usr/ccmp/lib/php.ini
+     
+- copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+  with_items:
+    - { name: '/etc/apache2/conf-available/serve-fcgi-php.conf', mode: '0644', owner: 'root', group: 'root' }
+    - { name: '/usr/lib/cgi-bin/index.php', mode: '0644', owner: 'root', group: 'root' }
+  notify:
+    - restart apache2
+
+- file: >
+    path='{{ container_dir }}/rootfs/etc/apache2/conf-enabled/serve-fcgi-php.conf'
+    src='../conf-available/serve-fcgi-php.conf'
+    state=link
+  notify:
+    - restart apache2
+    
+- file: >
+    path='{{ container_dir }}/rootfs/usr/lib/cgi-bin/php-cgi'
+    src='../../ccmp/bin/php-cgi'
+    state=link
+  notify:
+    - restart apache2
+
+- file: >
+    path='{{ container_dir }}/rootfs/etc/apache2/mods-enabled/fcgid.conf'
+    src='../mods-available/fcgid.conf'
+    state=link
+  notify:
+    - restart apache2
+
+- file: >
+    path='{{ container_dir }}/rootfs/etc/apache2/mods-enabled/fcgid.load'
+    src='../mods-available/fcgid.load'
+    state=link
+  notify:
+    - restart apache2
+

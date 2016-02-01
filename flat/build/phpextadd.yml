@@ -1,0 +1,41 @@
+---
+- hosts: phpbuild
+  gather_facts: False
+  remote_user: root
+
+  vars_files:
+    - config/config.yml
+  vars:
+    site: "{{ container[cname] }}"
+    container_name: "{{ site.container_name }}"
+    personal_conf_dir: "{{ config_dir }}/{{ container_name }}"
+    container_dir: "{{ lxc_dir }}/{{ container_name }}"
+    phpwork: /php_work
+    phpprefix: /usr/ccmp
+    phpversion: 5.6.17
+    phpext: mcrypt
+    dev_pkgs:
+      - libmcrypt-dev
+      
+
+# check whether the container have been deployed already.
+  pre_tasks:
+    - shell: lxc-info -s -H -n {{ container_name }}
+      register: lxc_info
+      failed_when: lxc_info.rc not in [0,1]
+      changed_when: lxc_info.rc == 1
+      
+# container's common processing.
+  roles:
+    - { role: deploy, when: "lxc_info.rc == 1" }
+    - { role: common_post}
+    - { role: phpextadd }
+
+# To start container as long as it did not start so far.
+  post_tasks:
+    - lxc_container:
+        name: "{{ container_name }}"
+        state: started
+#
+        
+

@@ -1,0 +1,9 @@
+- name: restart apache2
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      systemctl restart apache2
+  when: lxc_info.stdout.find('RUNNING') != -1
+      
+  

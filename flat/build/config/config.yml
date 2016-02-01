@@ -1,0 +1,12 @@
+config_dir: config
+
+#service:
+#  name: service1
+#  vlanid: 10
+  
+container:
+#Lvs
+  php1:
+    base_container: web-v1-0
+    container_name: php1
+    hostname: php1
