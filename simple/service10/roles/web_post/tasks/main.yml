@@ -1,0 +1,56 @@
+# The WEB container's common processing are described here.
+#
+- name: Stat container directory
+  stat: path={{ container_dir }}
+  register: rc
+  failed_when: rc.stat.isdir == ' false '
+
+- name: Create lxc config for this host. 
+  template: >
+    src={{ personal_conf_dir }}/config
+    dest={{ container_dir }}/config
+    mode='0644'
+  notify:
+    - restart container
+
+- name: Copy hostname
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+  with_items:
+  - { name: '/etc/hostname', mode: '0644', owner: 'root', group: 'root' }
+    
+- name: Create Directory for Web Setup
+  file: state=directory path={{ container_dir }}/rootfs/work
+    
+- name: Web Setup
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+  with_items:
+    - { name: '/work/web-setup.sh', mode: '0755', owner: 'root', group: 'root' }
+    - { name: '/etc/systemd/system/web-setup.service', mode: '0644', owner: 'root', group: 'root' } 
+  notify:
+    - restart web-setup
+    
+- name: Enable web-setup.service
+  file: >
+    path='{{ container_dir }}/rootfs/etc/systemd/system/multi-user.target.wants/web-setup.service'
+    src='../web-setup.service'
+    state=link
+
+- name: Setup index.html
+  copy: >
+    src={{ personal_conf_dir }}/rootfs/{{ item.name }}
+    dest={{ container_dir }}/rootfs/{{ item.name }}
+    mode={{ item.mode }}
+    owner={{ item.owner }}
+    group={{ item.group }}
+  with_items:
+    - { name: '/var/www/html/index.html', mode: '0444', owner: 'root', group: 'root' }

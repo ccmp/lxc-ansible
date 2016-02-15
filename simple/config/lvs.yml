@@ -1,0 +1,34 @@
+- hosts: lvs_servers
+  connection: local
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars/config.yml
+    - vars/var_config.yml
+    - vars/template.yml
+
+  vars:
+    #{# site: "{{ personal_config[cname] }}" #}
+    #{# pcon: "{{ container[cname] }}" #}
+    #{# container_name: "{{ pcon.container_name }}" #}
+    #{# hostname: "{{ pcon.hostname | default(container_name) }}" #}
+
+    def_cname: "{{ cname }}-{{service.name}}"
+    host_address: "{{ inventory_hostname | A }}" 
+    container_address: "{{ host_address | to_con_addr(service.id) }}"
+    container_name: "{{ container[cname].container_name | default(def_cname)}}"
+    hostname: "{{ container[cname].hostname | default(container_name) }}"
+    
+  pre_tasks:
+    - name: Create config directory
+      file: path={{ config_dest }} state=directory
+
+  roles:
+    - role: config
+      config_root: "{{ config_dest }}/{{ container_name }}/rootfs"
+      conf: "{{ lvs_config }}"
+      
+    - role: config
+      config_root: "{{ config_dest }}/{{ container_name }}"
+      conf: "{{ lvs_lxcconfig }}"
+

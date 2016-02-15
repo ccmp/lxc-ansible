@@ -1,7 +1,8 @@
 config_dir: config
 
 service:
-  name: service1
+  name: service10
+  id: 10
   vlanid: 10
   
 container:

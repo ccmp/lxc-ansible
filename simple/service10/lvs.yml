@@ -1,0 +1,42 @@
+---
+- hosts: lvs_servers
+  gather_facts: False
+  remote_user: root
+
+  vars_files:
+    - config/config.yml
+  vars:
+ #{#   site: "{{ container[cname] }}" #}
+ #{#   container_name: "{{ site.container_name }}" #}
+ 
+    def_cname: "{{ cname }}-{{service.name}}"
+    host_address: "{{ inventory_hostname | A }}" 
+    container_address: "{{ host_address | to_con_addr(service.id) }}"
+    container_name: "{{ container[cname].container_name | default(def_cname)}}"
+    hostname: "{{ container[cname].hostname | default(container_name) }}"
+    base_container: "{{ container[cname].base_container | default(default_base_container.lvs) }}"
+    
+# check whether the container have been deployed already.
+  pre_tasks:
+    - shell: lxc-info -s -H -n {{ container_name }}
+      register: lxc_info
+      failed_when: lxc_info.rc not in [0,1]
+      changed_when: lxc_info.rc == 1
+      
+# container's common processing.
+  roles:
+    - { role: deploy, when: "lxc_info.rc == 1" }
+    - { role: common_post}
+    - { role: lvs_post }
+# container's specific processing(if necessary)
+#   - { role: lvs1, when: "cname == 'lvs1'" }
+#   - { role: lvs2, when: "cname == 'lvs2'" }
+
+#
+# To start container as long as it did not start so far.
+  post_tasks:
+    - lxc_container:
+        name: "{{ container_name }}"
+        state: started
+
+

@@ -1,0 +1,36 @@
+- hosts: web_servers
+  connection: local
+  gather_facts: False
+  remote_user: root
+  vars_files :
+    - vars/config.yml
+    - vars/var_config.yml
+    - vars/template.yml
+
+  vars:
+#{#    site: "{{ personal_config[cname] }}" #}
+#{#    pcon: "{{ container[cname] }}" #}
+    def_cname: "{{ cname }}-{{service.name}}"
+#{#    container_address: "{{ inventory_hostname | A | to_con_addr}}" #}
+    host_address: "{{ inventory_hostname | A }}" 
+    container_address: "{{ host_address | to_con_addr(service.id) }}"
+    container_name: "{{ container[cname].container_name | default(def_cname)}}"
+    hostname: "{{ container[cname].hostname | default(container_name) }}"
+    
+  pre_tasks:
+    - name: Create config directory
+      file: path={{ config_dest }} state=directory
+    - debug: var=container_name
+    - debug: var=hostname
+    - debug: var=host_address
+    - debug: var=container_address
+    
+  roles:
+    - role: config
+      config_root: "{{ config_dest }}/{{ container_name }}/rootfs"
+      conf: "{{ web_config }}"
+      
+    - role: config
+      config_root: "{{ config_dest }}/{{ container_name }}"
+      conf: "{{ web_lxcconfig }}"
+
