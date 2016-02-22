@@ -37,13 +37,13 @@ web_config:
       - { path: '/etc/systemd/system/web-setup.service', mode: '0644' }
     
 lvs_lxcconfig:
-  copyonly:
+  template:
     src_dir: 'template/lvslxc'
     file:
       - { path: 'config', mode: '0644' }
     
 web_lxcconfig:
-  copyonly:
+  template:
     src_dir: 'template/weblxc'
     file:
       - { path: 'config', mode: '0644' }

@@ -1,0 +1,49 @@
+# Usage:
+#  ansible-playbook -i ./inventory/development ./web.yml -v
+#
+
+- hosts: manager
+  gather_facts: False
+  remote_user: root
+
+  vars:
+    repo_dir: "{{ manager.repo_dir }}"
+    local_repo_dir: "{{ repo_dir }}"
+    base_container_name: base-v1-0
+    container_name: web-v1-0 
+
+    base_container_dir: '{{ lxc_dir }}/{{ base_container_name }}'
+    container_dir: '{{ lxc_dir }}/{{ container_name }}'
+    pkgs:
+      - apache2
+      - iptables
+    extra_tasks: 
+      - 'systemctl enable apache2'
+    apt_mirror_env:
+      MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
+      SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
+
+  pre_tasks:
+    - stat: path={{ repo_dir }}/{{ base_container_name }}.tar.gz
+      register: base_tgz
+      changed_when: not base_tgz.stat.exists
+    - stat: path={{ repo_dir }}/{{ container_name }}.tar.gz
+      register: rcrpkg
+      changed_when: not rcrpkg.stat.exists
+
+  roles:
+    - { role: base, when: not base_tgz.stat.exists }
+    - { role: middle, when: not rcrpkg.stat.exists }
+
+  post_tasks:
+    - file: path={{ local_repo_dir }} state=directory
+    - stat: path={{ local_repo_dir }}/{{ container_name }}.tar.gz
+      register: rclpkg
+      changed_when: not rclpkg.stat.exists
+    - fetch: >
+        src={{ repo_dir }}/{{ container_name }}.tar.gz
+        dest={{ local_repo_dir }}/
+        flat=yes
+      when: not rclpkg.stat.exists
+   
+

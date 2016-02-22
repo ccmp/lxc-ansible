@@ -1,5 +1,5 @@
 #{# container_name: "{{ site.container_name }} #}
 
-personal_conf_dir: "{{ config_dir }}/{{ container_name }}"
+#{# personal_conf_dir: "{{ config_dir }}/{{ container_name }}" #}
 
-container_dir: "{{ lxc_dir }}/{{ container_name }}"
+#{# container_dir: "{{ lxc_dir }}/{{ container_name }}" #}

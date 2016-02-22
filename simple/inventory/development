@@ -1,18 +1,18 @@
 #
 # Inventory file for service10
 #
-[lvs_servers]
+[lvs-servers]
 lvs01 cname=lvs1
 lvs02 cname=lvs2
 
-[web_servers]
+[web-servers]
 web01 cname=web1
 web02 cname=web2
 web03 cname=web3
 
-[lxchost]
-lvs01
-lvs02
-web01
-web02
-web03
+[service-all:children]
+lvs-servers
+web-servers
+
+[manager]
+mng01

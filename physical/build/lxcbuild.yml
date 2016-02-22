@@ -1,0 +1,25 @@
+- hosts: manager
+  remote_user: root
+  gather_facts: False
+
+  vars:
+    lxcwork: /lxc_work
+    lxcversion: 1.0.8 
+
+  pre_tasks:
+    - stat: path=../physical/files/package/lxc_{{ lxcversion }}_amd64.deb
+      register: rclpkg
+    - stat: path={{ lxcwork }}/lxc_{{ lxcversion }}_amd64.deb
+      register: rcrpkg       
+  roles:
+    - { role: lxcbuild, when: not rcrpkg.stat.exists and not rclpkg.stat.exists}
+
+  post_tasks:
+    - fetch: >
+        src="{{ lxcwork }}/lxc_{{ lxcversion }}_amd64.deb"
+        dest="../physical/files/package/"
+        flat=yes
+      when: not rclpkg.stat.exists
+      
+        
+

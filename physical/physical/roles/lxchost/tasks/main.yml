@@ -1,0 +1,36 @@
+#- copy: src=../files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+#  with_items:
+#    - { name: '/etc/apt/sources.list', mode: '0644' }
+#    - { name: '/etc/apt/preferences', mode: '0644' }#
+#
+- apt: update_cache=yes cache_valid_time=3600
+#- apt: name={{ item }} state=present default_release=stretch
+- apt: name={{ item }} state=present
+  with_items:
+    - python3
+    - libcap2
+    - ca-certificates
+- copy: >
+    src=files/package/{{ lxcpackage }}
+    dest={{ tmpdir }}/{{ lxcpackage }}
+    
+- apt: deb={{ tmpdir }}/{{ lxcpackage }}
+
+- apt: name={{ item }} state=present 
+  with_items:
+    - less
+    - bridge-utils
+    - python-dev
+    - python-setuptools
+    - gcc
+    - tcpdump
+    - strace
+    - ca-cacert
+
+- easy_install: name=pip
+
+- pip: name=lxc-python2 state=latest
+
+- name: Create lxc directory
+  file: state=directory path={{ lxc_dir }}
+  

@@ -1,0 +1,48 @@
+- apt: update_cache=yes cache_valid_time=3600
+
+- apt: name={{ item }} state=present
+  with_items:
+    - dh-make
+    - fakeroot
+    - devscripts
+    - dh-autoreconf
+    - make
+    - automake
+    - autoconf
+    - pkg-config
+    - python3
+    - python3-dev
+    - libcap-dev
+    - ca-certificates
+
+- file: state=directory path={{ lxcwork }}
+
+- stat: path={{ lxcwork }}/lxc-{{ lxcversion }}.tar.gz
+  register: rcsrc
+  
+- get_url: url=https://linuxcontainers.org/downloads/lxc/lxc-{{ lxcversion }}.tar.gz dest={{ lxcwork }}/lxc-{{ lxcversion }}.tar.gz force=True
+  when: not rcsrc.stat.exists
+
+- file: path={{ lxcwork }}/lxc-{{ lxcversion }} state=absent
+- file: path={{ lxcwork }}/lxc_{{ lxcversion }}_amd64.deb state=absent
+
+- shell: |
+    tar xfz lxc-{{ lxcversion }}.tar.gz
+  args:
+    chdir: "{{ lxcwork }}"
+    
+- shell: |
+    ./autogen.sh
+    ./configure --prefix=/usr --exec-prefix=/usr --includedir=/usr/include --sysconfdir=/etc --localstatedir=/var
+    dh_make --native --single --yes
+    rm debian/*.ex debian/*.EX
+    sed -i 's/--with autotools-dev/--with autoreconf/' debian/rules
+    sed -i 's/\(^Build-Depends.*\)autotools-dev/\1dh-autoreconf/;s/\(^Depends.*\)$/\1, python3/' debian/control
+    debuild -us -uc
+  args:
+    chdir: "{{ lxcwork }}/lxc-{{ lxcversion }}"
+
+- file: path={{ lxcwork }}/lxc_{{ lxcversion }}_amd64.deb
+  register: rcdeb 
+  failed_when: rcdeb|failed
+  

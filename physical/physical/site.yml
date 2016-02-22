@@ -1,0 +1,6 @@
+---
+- include: common.yml
+- include: lxchost.yml
+- include: mnghost.yml
+- include: lvshost.yml
+- include: webhost.yml

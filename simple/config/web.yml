@@ -1,4 +1,4 @@
-- hosts: web_servers
+- hosts: web-servers
   connection: local
   gather_facts: False
   remote_user: root
@@ -8,14 +8,11 @@
     - vars/template.yml
 
   vars:
-#{#    site: "{{ personal_config[cname] }}" #}
-#{#    pcon: "{{ container[cname] }}" #}
     def_cname: "{{ cname }}-{{service.name}}"
-#{#    container_address: "{{ inventory_hostname | A | to_con_addr}}" #}
     host_address: "{{ inventory_hostname | A }}" 
     container_address: "{{ host_address | to_con_addr(service.id) }}"
-    container_name: "{{ container[cname].container_name | default(def_cname)}}"
-    hostname: "{{ container[cname].hostname | default(container_name) }}"
+    container_name: "{{ container_name_custom[cname] | default(def_cname)}}"
+    hostname: "{{ container_hostname_custom[cname] | default(container_name) }}"
     
   pre_tasks:
     - name: Create config directory

@@ -1,0 +1,22 @@
+#
+# --- Host's role and Logical host binding.
+#
+[mnghost]
+mng01
+
+[lvshost]
+lvs01
+lvs02
+
+[webhost]
+web01
+web02
+web03
+
+[lxchost:children]
+lvshost
+webhost
+mnghost
+
+[manager]
+mng01

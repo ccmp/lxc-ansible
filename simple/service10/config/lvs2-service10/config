@@ -7,18 +7,18 @@ lxc.include = /usr/share/lxc/config/debian.common.conf
 lxc.arch = x86_64
 
 # Container specific configuration
-lxc.rootfs = {{ lxc_dir }}/{{ container_name }}/rootfs
-lxc.utsname = {{ hostname }}
+lxc.rootfs = /var/lib/lxc/lvs2-service10/rootfs
+lxc.utsname = lvs2-service10
 
 # Network configuration
-lxc.network.type = veth
-lxc.network.flags = up
-lxc.network.link = lbr1
+#lxc.network.type = veth
+#lxc.network.flags = up
+#lxc.network.link = lbr1
 #lxc.network.ipv4 =
 #
 lxc.network.type = veth
 lxc.network.flags = up
-lxc.network.link = lbr{{ service.vlanid }}
+lxc.network.link = lbr10
 #lxc.network.ipv4 = 
 lxc.autodev = 1
 lxc.kmsg = 0
