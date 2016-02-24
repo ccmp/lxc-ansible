@@ -1,8 +1,4 @@
-lxc.network.type = veth
-lxc.network.flags = up
-lxc.network.link = {{ mnghost.lxc_default.iface }}
-lxc.network.ipv4 = {{ mnghost.lxc_default.ip }}
-lxc.network.ipv4.gateway = {{ mnghost.lxc_default.gateway }}
+{% include "files/lxc/default.conf" ignore missing %}
 
 lxc.rootfs = {{ container_dir }}/rootfs
 

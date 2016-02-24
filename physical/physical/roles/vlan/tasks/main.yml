@@ -27,7 +27,7 @@
   
 - name: create vlan interface and its bridge.
   template: >
-    src=../files/etc/network/interfaces.d/vlanX
+    src=files/vlan/etc/network/interfaces.d/vlanX
     dest=/etc/network/interfaces.d/vlan{{ item.id }}
     mode=0644
   with_items: vlan

@@ -1,8 +1,8 @@
 - name: Create repository directory
-  file: path={{ manager.repo_dir }} state=directory
+  file: path={{ repo_dir }} state=directory
 
 - name: Create archive directory
-  file: path={{ manager.archive_dir }} state=directory
+  file: path={{ archive_dir }} state=directory
 
 - name: Check whether interfaces.d/ is used.
   shell: grep -E "^ *source-directory */etc/network/interfaces.d *" /etc/network/interfaces > /dev/null
@@ -18,7 +18,7 @@
 
 - name: Copy Network config
   template: >
-    src=../files/etc/network/interfaces.d/lbrX
+    src=files/mnghost/etc/network/interfaces.d/lbrX
     dest=/etc/network/interfaces.d/{{ item.name }}
     mode=0644
   with_items: mnghost.bridge
@@ -26,7 +26,7 @@
   
 - name: Copy LXC default.conf
   template: >
-    src=../files/{{ item.name }}
+    src=files/mnghost/{{ item.name }}
     dest={{ item.name }}
     mode={{ item.mode }}
   with_items:
@@ -36,6 +36,6 @@
   sysctl: name="net.ipv4.ip_forward" value=1 sysctl_set=yes
 
 - name: Port forward enable permanetly
-  copy: src=../files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+  copy: src=files/mnghost/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
   with_items:
     - { name: '/etc/sysctl.d/forward.conf', mode: '0644' }

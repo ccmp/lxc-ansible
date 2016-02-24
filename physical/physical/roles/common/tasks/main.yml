@@ -1,4 +1,4 @@
-- copy: src=../files/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
+- copy: src=files/common/{{ item.name }} dest={{ item.name }} mode={{ item.mode }}
   with_items:
     - { name: '/etc/apt/sources.list', mode: '0644' }
     - { name: '/etc/apt/preferences', mode: '0644' }

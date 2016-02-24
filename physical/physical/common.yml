@@ -1,4 +1,4 @@
-- hosts: allhost
+- hosts: all
   remote_user: root
   gather_facts: False
   roles:

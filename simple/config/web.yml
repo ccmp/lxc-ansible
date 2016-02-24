@@ -17,10 +17,6 @@
   pre_tasks:
     - name: Create config directory
       file: path={{ config_dest }} state=directory
-    - debug: var=container_name
-    - debug: var=hostname
-    - debug: var=host_address
-    - debug: var=container_address
     
   roles:
     - role: config

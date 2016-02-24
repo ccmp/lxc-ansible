@@ -37,15 +37,17 @@
     - { role: middle, when: not rcrpkg.stat.exists }
 
   post_tasks:
-    - file: path={{ local_repo_dir }} state=directory
+    - file: path={{ local_repo_dir }} state=directory recurse=yes
+      delegate_to: localhost
     - stat: path={{ local_repo_dir }}/{{ container_name }}.tar.gz
+      delegate_to: localhost
       register: rclpkg
       changed_when: not rclpkg.stat.exists
-    - fetch: >
-        src={{ repo_dir }}/{{ ontainer_name }}.tar.gz
+    - synchronize: >
+        src={{ repo_dir }}/{{ container_name }}.tar.gz
         dest={{ local_repo_dir }}/
-        flat=yes
-      when: not rclpkg.stat.exists
+        mode=pull
+
 
     
 

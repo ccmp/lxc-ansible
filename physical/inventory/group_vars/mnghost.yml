@@ -1,3 +1,6 @@
+repo_dir: /work/image
+archive_dir: /work/archives
+
 mnghost:
   bridge:
     - name: &brdif "lbr01"
@@ -8,3 +11,5 @@ mnghost:
     iface: *brdif
     ip: "192.168.10.101/24" # address/mask(8,16,...)
     gateway: *brdip
+
+    

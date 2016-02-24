@@ -1,11 +1,21 @@
+## fetch lxc defalut network config from manager host. 
+- file: path=files/lxc/default.conf state=absent
+  delegate_to: localhost
+  
+- synchronize: >
+    src=/etc/lxc/default.conf
+    dest=files/lxc/
+    mode=pull
+##
 
 - file: path={{ container_dir }} state=absent
 - file: path={{ container_dir }} state=directory
 - file: path={{ repo_dir }} state=directory 
 
-- shell: tar xfz {{ repo_dir }}/{{ base_container_name }}.tar.gz
-  args:
-    chdir: '{{ container_dir }}'
+- unarchive: >
+    src={{ repo_dir }}/{{ base_container_name }}.tar.gz
+    dest={{ container_dir }}
+    copy=no
 
 - template: >
     src=files/lxc/config

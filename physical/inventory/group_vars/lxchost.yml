@@ -1,8 +1,4 @@
 lxc_dir: /var/lib/lxc
-tmp_archive_dir: /tmp
-manager_host: mng01
-  
-manager:
-  repo_dir: /work/image
-  archive_dir: /work/archives
+lxcpackage: lxc_1.0.8_amd64.deb
+
 
