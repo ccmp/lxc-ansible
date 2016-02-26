@@ -1,0 +1,4 @@
+- name: Stop Container
+  lxc_container:
+    name: "{{ container_name }}"
+    state: stopped

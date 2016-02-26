@@ -1,0 +1,19 @@
+config_dest: ../service/config
+
+gateway:
+  ip: 10.20.4.1
+    
+lvs_common:
+  vrrp:
+    vip: 10.20.4.10
+    auth_password: password
+  vip: 10.254.10.1
+  port: 80
+
+web_common:
+  port: 80
+
+ccmp:
+  share_dir: /work/ccmp
+  mount_point: usr/ccmp
+  

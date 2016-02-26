@@ -1,0 +1,46 @@
+# Usage:
+#  ansible-playbook -i ./inventory/development ./base.yml -v
+#
+
+- hosts: manager
+  gather_facts: False
+  remote_user: root
+
+  vars:
+    repo_dir: "{{ manager.repo_dir }}"
+    local_repo_dir: "{{ repo_dir }}"
+    container_name: base-v1-0
+    container_dir: '{{ lxc_dir }}/{{ container_name }}'
+    pkgs:
+      - iputils-ping
+      - strace
+      - vim-tiny
+      - tcpdump
+      - telnet
+    apt_mirror_env:
+      MIRROR: http://apt.h.ccmp.jp:3142/ftp.us.debian.org/debian
+      SECURITY_MIRROR: http://apt.h.ccmp.jp:3142/security.debian.org/
+
+  pre_tasks:
+    - stat: path={{ repo_dir }}/{{ container_name }}.tar.gz
+      register: rcrpkg
+      changed_when: not rcrpkg.stat.exists
+
+  roles:
+    - { role: base, when: not rcrpkg.stat.exists }
+
+  post_tasks:
+    - file: path={{ local_repo_dir }} state=directory recurse=yes
+      delegate_to: localhost
+    - stat: path={{ local_repo_dir }}/{{ container_name }}.tar.gz
+      delegate_to: localhost
+      register: rclpkg
+      changed_when: not rclpkg.stat.exists
+    - synchronize: >
+        src={{ repo_dir }}/{{ container_name }}.tar.gz
+        dest={{ local_repo_dir }}/
+        mode=pull
+
+      
+      
+

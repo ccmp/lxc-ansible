@@ -1,0 +1,11 @@
+- hosts: service-all
+  gather_facts: False
+  remote_user: root
+  vars_files:
+    - ../service/config/config.yml
+  vars:
+    def_cname: "{{ cname }}-{{service.name}}"
+    container_name: "{{ container_name_custom[cname] | default(def_cname)}}"
+
+  roles:
+    - { role: destroy }

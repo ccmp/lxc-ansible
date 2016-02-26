@@ -1,0 +1,1 @@
+{{ ccmp.share_dir }} {{ ccmp.mount_point }} none bind,create=dir 0 0

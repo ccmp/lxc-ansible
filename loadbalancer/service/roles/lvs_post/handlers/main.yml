@@ -1,0 +1,28 @@
+- name: restart network
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      systemctl restart networking
+  when: lxc_info.stdout.find('RUNNING') != -1
+      
+- name: restart keepalived
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      systemctl restart keepalived
+  when: lxc_info.stdout.find('RUNNING') != -1
+  
+- name: restart lvs-setup
+  lxc_container:
+    name: "{{ container_name }}"
+    state: started
+    container_command: |
+      systemctl restart lvs-setup
+  when: lxc_info.stdout.find('RUNNING') != -1
+
+- name: restart container
+  debug: > 
+    msg="NOTIFY:{{ container_name }} config chenged.Please restart to enable the setting."
+

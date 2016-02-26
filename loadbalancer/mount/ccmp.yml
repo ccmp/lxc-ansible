@@ -1,0 +1,21 @@
+---
+- hosts: service-all
+  gather_facts: False
+  remote_user: root
+
+  vars:
+    share_dir: /work/ccmp
+    src_dir: files/ccmp
+    
+  tasks:
+    - file: >
+        path={{ share_dir }}
+        state=directory
+        recurse=yes
+      
+    - synchronize: >
+        src={{ src_dir }}/
+        dest={{ share_dir }}
+    
+
+

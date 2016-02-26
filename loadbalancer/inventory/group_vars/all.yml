@@ -1,0 +1,7 @@
+lxc_dir: /var/lib/lxc
+tmp_archive_dir: /tmp
+  
+manager:
+  repo_dir: /work/image
+  archive_dir: /work/archives
+

@@ -1,0 +1,30 @@
+config_dir: config
+
+service:
+  name: service20
+  id: 20
+  vlanid: 20
+
+default_base_container:
+  lvs: lvs-v1-0
+  web: web-python-v1-0
+
+base_container_custom:
+#  lvs1:
+#  lvs2:
+#  web1:
+#  web2:
+      
+container_name_custom:
+#  lvs1:
+#  lvs2:
+#  web1:
+#  web2:
+    
+container_hostname_custom:
+#  lvs1:
+#  lvs2:
+#  web1:
+#  web2:
+
+   

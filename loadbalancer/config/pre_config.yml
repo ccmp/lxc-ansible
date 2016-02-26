@@ -1,0 +1,15 @@
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  remote_user: root
+  vars_files:
+  - vars/var_config.yml
+
+  tasks:
+    - name: Create config directory
+      file: path={{ config_dest }} state=directory
+    - name: Copy config file
+      copy: >
+        src=vars/config.yml
+        dest={{ config_dest }}/config.yml
+
