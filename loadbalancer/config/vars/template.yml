@@ -14,12 +14,18 @@ def_perm:
   fmode: '0644'
   owner: 'root'
   group: 'root'
-   
+
+common_config:
+  template:
+    src_dir: 'template/common'
+    file:
+      - { path: '/etc/hostname', mode: '0644' }
+    
 lvs_config:
   template:
     src_dir: 'template/lvs'
     file:
-      - { path: '/etc/hostname', mode: '0644' }
+ #     - { path: '/etc/hostname', mode: '0644' }
       - { path: '/etc/network/interfaces', mode: '0644' }
       - { path: '/etc/keepalived/keepalived.conf', mode: '0644' }
       - { path: '/work/lvs-setup.sh', mode: '0755' }
@@ -30,12 +36,18 @@ web_config:
   template:
     src_dir: 'template/web'
     file:
-      - { path: '/etc/hostname', mode: '0644' }
+#      - { path: '/etc/hostname', mode: '0644' }
       - { path: '/etc/network/interfaces', mode: '0644' }
       - { path: '/var/www/html/index.html', mode: '0644' }
       - { path: '/work/web-setup.sh', mode: '0755' }
       - { path: '/etc/systemd/system/web-setup.service', mode: '0644' }
 
+haproxy_config:
+  template:
+    src_dir: 'template/haproxy'
+    file:
+      - { path: '/etc/network/interfaces', mode: '0644' }
+      
 common_lxcconfig:
   template:
     src_dir: 'template/commonlxc'
@@ -54,3 +66,10 @@ web_lxcconfig:
     file:
       - { path: 'config', mode: '0644' }
       
+haproxy_lxcconfig:
+  template:
+    src_dir: 'template/haproxylxc'
+    file:
+      - { path: 'config', mode: '0644' }
+
+  

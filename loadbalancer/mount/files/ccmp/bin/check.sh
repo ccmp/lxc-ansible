@@ -3,7 +3,7 @@
 SERVER=$1
 PORT=$2
 
-HELLO=$(echo HELLO | nc -w 3 ${SERVER} ${PORT})
+HELLO=$(echo HELLO | nc -q 1 -w 3 ${SERVER} ${PORT})
 
 if [ $? -eq 0 ];then
     echo ${HELLO} | grep "FINE" > /dev/null

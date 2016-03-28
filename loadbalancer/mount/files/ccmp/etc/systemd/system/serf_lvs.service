@@ -1,0 +1,13 @@
+[Unit]
+Description=Serf agent
+After=network.target
+
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/ccmp/bin/serf agent \
+			    -config-file "/usr/ccmp/etc/serf/serf_common.json" \
+			    -config-file "/usr/ccmp/etc/serf/serf_lvs.json"
+
+[Install]
+WantedBy=multi-user.target

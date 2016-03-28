@@ -1,0 +1,22 @@
+{
+    "event_handlers":[
+	"user:room-up=/usr/ccmp/etc/serf/event/room_up.sh",
+	"user:room-rivival=/usr/ccmp/etc/serf/event/room_revival.sh",
+	"user:room-down=/usr/ccmp/etc/serf/event/room_down.sh",
+	"user:room-destroy=/usr/ccmp/etc/serf/event/room_destroy.sh",
+	"member-failed=/usr/ccmp/etc/serf/event/room_down.sh",
+	"member-failed=/usr/ccmp/etc/serf/event/lb_failed.sh",
+	"member-leave=/usr/ccmp/etc/serf/event/room_destroy.sh",
+	"member-leave=/usr/ccmp/etc/serf/event/lb_failed.sh",
+	"member-reap=/usr/ccmp/etc/serf/event/room_destroy.sh"
+    ],
+    "tags":{
+	"role": "lb",
+	"vrvip": "10.20.4.10",
+	"vrsub": "16",
+	"vriface": "eth0",
+	"ipvsvip": "10.254.10.1",
+	"ipvssorry": "10.20.0.50"
+    }
+}
+

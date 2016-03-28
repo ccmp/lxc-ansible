@@ -1,0 +1,11 @@
+auto lo eth0 
+
+iface lo inet loopback
+
+iface eth0 inet static
+  address {{ container_address }}/16
+  gateway {{ gateway.ip }}
+
+#iface eth1 inet static
+
+

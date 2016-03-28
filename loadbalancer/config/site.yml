@@ -3,6 +3,7 @@
 - include: common.yml
 - include: lvs.yml
 - include: web.yml
+- include: haproxy.yml
 
 
 

@@ -8,7 +8,8 @@ service:
 default_base_container:
   lvs: lvs-v1-0
   web: web-python-v1-0
-
+  haproxy: haproxy-v1-0
+  
 base_container_custom:
 #  lvs1:
 #  lvs2:

@@ -16,6 +16,6 @@
     - synchronize: >
         src={{ src_dir }}/
         dest={{ share_dir }}
-    
+        delete=yes
 
 

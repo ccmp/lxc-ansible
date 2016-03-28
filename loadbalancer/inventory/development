@@ -10,9 +10,18 @@ web01 cname=web1
 web02 cname=web2
 web03 cname=web3
 
+[checker-servers]
+chk01 cname=chk1
+
+[haproxy-servers]
+hap01 cname=haproxy1
+hap02 cname=haproxy2
+
 [service-all:children]
 lvs-servers
 web-servers
+haproxy-servers
+checker-servers
 
 [manager]
 mng01

@@ -1,4 +1,4 @@
-- hosts: service-all
+- hosts: "{{ target }}"
   gather_facts: False
   remote_user: root
   vars_files:

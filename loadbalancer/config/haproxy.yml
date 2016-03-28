@@ -1,4 +1,4 @@
-- hosts: service-all
+- hosts: haproxy-servers
   connection: local
   gather_facts: False
   remote_user: root
@@ -21,9 +21,9 @@
   roles:
     - role: config
       config_root: "{{ config_dest }}/{{ container_name }}/rootfs"
-      conf: "{{ common_config }}"
-
+      conf: "{{ haproxy_config }}"
+      
     - role: config
       config_root: "{{ config_dest }}/{{ container_name }}"
-      conf: "{{ common_lxcconfig }}"
+      conf: "{{ haproxy_lxcconfig }}"
 
